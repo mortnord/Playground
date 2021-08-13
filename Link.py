@@ -1,15 +1,14 @@
 import random
-
 import arcade
 
 SPRITE_SCALING_PLAYER = 0.1
-COIN_COUNT = 20
-SPRITE_SCALING_COIN = 0.1
+PLAYER_MOVEMENT_SPEED = 5
+
 
 # https://api.arcade.academy/en/latest/examples/platform_tutorial/step_01.html
 def setup(self):
     """ Set up the game and initialize the variables. """
-
+    PLAYER_MOVEMENT_SPEED = 5
     # Create the sprite lists
     self.player_list = arcade.SpriteList()
     self.coin_list = arcade.SpriteList()
@@ -24,15 +23,6 @@ def setup(self):
     self.player_sprite.center_y = 50
     self.player_list.append(self.player_sprite)
 
-    # Create the coins
-    for i in range(COIN_COUNT):
-        # Create the coin instance
-        # Coin image from kenney.nl
-        coin = arcade.Sprite("Sprites/coin_01.png", SPRITE_SCALING_COIN)
+    self.wall_list = arcade.SpriteList(use_spatial_hash=True)
+    self.physics_engine = arcade.PhysicsEngineSimple(self.player_sprite, self.wall_list)
 
-        # Position the coin
-        coin.center_x = random.randrange(600)
-        coin.center_y = random.randrange(600)
-
-        # Add the coin to the lists
-        self.coin_list.append(coin)
