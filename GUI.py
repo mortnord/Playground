@@ -1,51 +1,44 @@
+import random
+
 import arcade
-def runGUI():
-    # Set constants for the screen size
-    SCREEN_WIDTH = 600
-    SCREEN_HEIGHT = 600
 
-    # Open the window. Set the window title and dimensions (width and height)
-    arcade.open_window(SCREEN_WIDTH, SCREEN_HEIGHT, "Drawing Example")
+import Link
 
-    # Set the background color to white.
-    # For a list of named colors see:
-    # http://arcade.academy/arcade.color.html
-    # Colors can also be specified in (red, green, blue) format and
-    # (red, green, blue, alpha) format.
-    arcade.set_background_color(arcade.color.WHITE)
+SCREEN_WIDTH = 800
+SCREEN_HEIGHT = 600
 
-    # Start the render process. This must be done before any drawing commands.
-    arcade.start_render()
 
-    # Draw the face
-    x = 300
-    y = 300
-    radius = 200
-    arcade.draw_circle_filled(x, y, radius, arcade.color.YELLOW)
+class MyGame(arcade.Window):
+    """ Main application class. """
 
-    # Draw the right eye
-    x = 370
-    y = 350
-    radius = 20
-    arcade.draw_circle_filled(x, y, radius, arcade.color.BLACK)
+    def __init__(self, width, height):
+        super().__init__(width, height)
 
-    # Draw the left eye
-    x = 230
-    y = 350
-    radius = 20
-    arcade.draw_circle_filled(x, y, radius, arcade.color.BLACK)
+        arcade.set_background_color(arcade.color.AMAZON)
 
-    # Draw the smile
-    x = 300
-    y = 280
-    width = 120
-    height = 100
-    start_angle = 190
-    end_angle = 350
-    arcade.draw_arc_outline(x, y, width, height, arcade.color.BLACK, start_angle, end_angle, 10)
+    def setup(self):
+        Link.setup(self)
 
-    # Finish drawing and display the result
-    arcade.finish_render()
+    def on_draw(self):
+        """ Render the screen. """
+        arcade.start_render()
+        # Your drawing code goes here
+        self.coin_list.draw()
 
-    # Keep the window open until the user hits the 'close' button
+        self.player_list.draw()
+
+    def update(self, delta_time):
+        """ All the logic to move, and the game logic goes here. """
+        pass
+
+
+def main():
+    game = MyGame(SCREEN_WIDTH, SCREEN_HEIGHT)
+    game.setup()
     arcade.run()
+
+'''
+if __name__ == "__main__":
+    main()
+
+'''
