@@ -1,11 +1,5 @@
-import random
-
 import arcade
-
 import Link
-
-SCREEN_WIDTH = 800
-SCREEN_HEIGHT = 600
 
 
 class MyGame(arcade.Window):
@@ -30,15 +24,3 @@ class MyGame(arcade.Window):
     def update(self, delta_time):
         """ All the logic to move, and the game logic goes here. """
         pass
-
-
-def main():
-    game = MyGame(SCREEN_WIDTH, SCREEN_HEIGHT)
-    game.setup()
-    arcade.run()
-
-'''
-if __name__ == "__main__":
-    main()
-
-'''
