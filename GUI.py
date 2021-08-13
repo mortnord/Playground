@@ -1,8 +1,9 @@
 import arcade
 import Link
+import Walls
 
 
-class MyGame(arcade.Window):
+class LonLonRanch(arcade.Window):
     """ Main application class. """
 
     def __init__(self, width, height):
@@ -11,7 +12,8 @@ class MyGame(arcade.Window):
         arcade.set_background_color(arcade.color.AMAZON)
 
     def setup(self):
-        Link.setup(self)
+        Walls.setup_walls(self)
+        Link.setup_link(self)
 
     def on_draw(self):
         """ Render the screen. """

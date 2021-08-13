@@ -1,4 +1,3 @@
-import random
 import arcade
 
 SPRITE_SCALING_PLAYER = 0.1
@@ -6,9 +5,9 @@ PLAYER_MOVEMENT_SPEED = 5
 
 
 # https://api.arcade.academy/en/latest/examples/platform_tutorial/step_01.html
-def setup(self):
+def setup_link(self):
     """ Set up the game and initialize the variables. """
-    PLAYER_MOVEMENT_SPEED = 5
+
     # Create the sprite lists
     self.player_list = arcade.SpriteList()
     self.coin_list = arcade.SpriteList()
@@ -23,6 +22,4 @@ def setup(self):
     self.player_sprite.center_y = 50
     self.player_list.append(self.player_sprite)
 
-    self.wall_list = arcade.SpriteList(use_spatial_hash=True)
     self.physics_engine = arcade.PhysicsEngineSimple(self.player_sprite, self.wall_list)
-
