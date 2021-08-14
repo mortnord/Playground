@@ -8,6 +8,10 @@ import Walls
 
 # Dtte er enkle imports for at det skal få tilgang til de andre filene
 # self referer til seg selv, slik at det er objektet som kaller koden på seg selv, om seg selv.
+from Enumerators import Veggies
+from Items.RawFoodObject import RawFoodObject
+
+
 class LonLonRanch(arcade.Window):
     """ Main application class. """
 
@@ -46,24 +50,29 @@ class LonLonRanch(arcade.Window):
     def on_key_press(self, key, modifiers):
         """Called whenever a key is pressed. """
         if key == arcade.key.UP or key == arcade.key.W:
-            self.player_sprite.change_y = Link.PLAYER_MOVEMENT_SPEED
+            self.player_list[0].change_y = Link.PLAYER_MOVEMENT_SPEED
         elif key == arcade.key.DOWN or key == arcade.key.S:
-            self.player_sprite.change_y = -Link.PLAYER_MOVEMENT_SPEED
+            self.player_list[0].change_y = -Link.PLAYER_MOVEMENT_SPEED
         elif key == arcade.key.LEFT or key == arcade.key.A:
-            self.player_sprite.change_x = -Link.PLAYER_MOVEMENT_SPEED
+            self.player_list[0].change_x = -Link.PLAYER_MOVEMENT_SPEED
         elif key == arcade.key.RIGHT or key == arcade.key.D:
-            self.player_sprite.change_x = Link.PLAYER_MOVEMENT_SPEED
+            self.player_list[0].change_x = Link.PLAYER_MOVEMENT_SPEED
         elif key == arcade.key.E:
             Link.lose_health(self, 3)
         elif key == arcade.key.Q:
             Link.gain_health(self, 3)
+        elif key == arcade.key.G:
+            gulrot1 = RawFoodObject(0.1, "Gulrot", Veggies.Carrot)
+            print(gulrot1.name)
+            print(gulrot1.weight)
+            print(isinstance(gulrot1.RawFoodType, Veggies))
 
     def on_key_release(self, key, modifiers):
         if key == arcade.key.UP or key == arcade.key.W:
-            self.player_sprite.change_y = 0
+            self.player_list[0].change_y = 0
         elif key == arcade.key.DOWN or key == arcade.key.S:
-            self.player_sprite.change_y = 0
+            self.player_list[0].change_y = 0
         elif key == arcade.key.LEFT or key == arcade.key.A:
-            self.player_sprite.change_x = 0
+            self.player_list[0].change_x = 0
         elif key == arcade.key.RIGHT or key == arcade.key.D:
-            self.player_sprite.change_x = 0
+            self.player_list[0].change_x = 0
