@@ -1,5 +1,7 @@
 import arcade
 
+from Inventory import Inventory
+
 SPRITE_SCALING_PLAYER = 0.05
 PLAYER_MOVEMENT_SPEED = 3
 
@@ -13,7 +15,7 @@ def setup_link(self):
 
     # Liv
     self.health = 12
-
+    self.InventoryLink = Inventory()
     # Set up the player
     self.player_sprite = arcade.Sprite("Sprites/Link.png", SPRITE_SCALING_PLAYER)
     self.player_sprite.center_x = 50  # Starting position

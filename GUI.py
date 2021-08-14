@@ -62,10 +62,10 @@ class LonLonRanch(arcade.Window):
         elif key == arcade.key.Q:
             Link.gain_health(self, 3)
         elif key == arcade.key.G:
+
             gulrot1 = RawFoodObject(0.1, "Gulrot", Veggies.Carrot)
-            print(gulrot1.name)
-            print(gulrot1.weight)
-            print(isinstance(gulrot1.RawFoodType, Veggies))
+            self.InventoryLink.append_to_inventory(gulrot1)
+            print(self.InventoryLink.get_Inventory_Contents()[0].get_name())
 
     def on_key_release(self, key, modifiers):
         if key == arcade.key.UP or key == arcade.key.W:
