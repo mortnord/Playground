@@ -1,10 +1,10 @@
 
 class Inventory:
     def __init__(self):
-        self.InventoryContents = list()
+        self.inventory_contents = list()
 
-    def get_Inventory_Contents(self):
-        return self.InventoryContents
+    def get_inventory_contents(self):
+        return self.inventory_contents
 
     def append_to_inventory(self, object_to_append):
-        self.InventoryContents.append(object_to_append)
+        self.inventory_contents.append(object_to_append)

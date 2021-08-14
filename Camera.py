@@ -6,31 +6,31 @@ BOTTOM_VIEWPORT_MARGIN = 50
 TOP_VIEWPORT_MARGIN = 100
 
 
-def update_camera(self, linkCharacter):
+def update_camera(self, link_character):
     changed = False
 
     # Kamera til venstre
     left_boundary = self.view_left + LEFT_VIEWPORT_MARGIN
-    if linkCharacter.player_sprite.left < left_boundary:
-        self.view_left -= left_boundary - linkCharacter.player_sprite.left
+    if link_character.player_sprite.left < left_boundary:
+        self.view_left -= left_boundary - link_character.player_sprite.left
         changed = True
 
     # Kamera til høyre
     right_boundary = self.view_left + self.width - RIGHT_VIEWPORT_MARGIN
-    if linkCharacter.player_sprite.right > right_boundary:
-        self.view_left += linkCharacter.player_sprite.right - right_boundary
+    if link_character.player_sprite.right > right_boundary:
+        self.view_left += link_character.player_sprite.right - right_boundary
         changed = True
 
     # Kamera opp
     top_boundary = self.view_bottom + self.height - TOP_VIEWPORT_MARGIN
-    if linkCharacter.player_sprite.top > top_boundary:
-        self.view_bottom += linkCharacter.player_sprite.top - top_boundary
+    if link_character.player_sprite.top > top_boundary:
+        self.view_bottom += link_character.player_sprite.top - top_boundary
         changed = True
 
     # Kamera Ned
     bottom_boundary = self.view_bottom + BOTTOM_VIEWPORT_MARGIN
-    if linkCharacter.player_sprite.bottom < bottom_boundary:
-        self.view_bottom -= bottom_boundary - linkCharacter.player_sprite.bottom
+    if link_character.player_sprite.bottom < bottom_boundary:
+        self.view_bottom -= bottom_boundary - link_character.player_sprite.bottom
         changed = True
 
     # Faktisk endre kamera

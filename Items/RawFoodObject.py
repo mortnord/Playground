@@ -1,11 +1,13 @@
-from Items.GenericObject import GenericObject
+from Items.FoodObject import FoodObject
 
 
-class RawFoodObject(GenericObject):
-    def __init__(self, weight, name, RawFoodType):
+class RawFoodObject(FoodObject):
+    def __init__(self, weight, name, raw_food_type, healing_value):
         self.weight = weight
         self.name = name
-        self.RawFoodType = RawFoodType
+        self.raw_food_type = raw_food_type
+        self.healing_value = healing_value
 
     def get_type(self):
-        return self.RawFoodType
+        return self.raw_food_type
+
