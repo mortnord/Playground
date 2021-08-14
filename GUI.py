@@ -14,7 +14,7 @@ from Items.RawFoodObject import RawFoodObject
 
 class LonLonRanch(arcade.Window):
     """ Main application class. """
-
+    linkCharacter = 0
     # Dette er konstruktøren til Classen LonLonRanch, som arver fra Window classen i Arcade.
     def __init__(self, width, height):
         # Her caller vi super-classen (den vi arver fra), sin __init__ metode, for å starte opp tegningen av vinduet.
@@ -28,51 +28,56 @@ class LonLonRanch(arcade.Window):
     # Setup kalles 1 gang i Main.Py, for å sette opp vinduet.
     def setup(self):
 
+
+        self.characters = list()
         # Her kaller vi de 3 metodene i de 3 forskjellige .py filene,for å ha orden i koden, og ikke en veldig lang fil.
         Walls.setup_walls(self)
-        Link.setup_link(self)
+        self.linkCharacter = Link.LinkCharacter()
+        self.characters.append(self.linkCharacter)
         Objects.setup_coins(self)
+
+        self.physics_engine = arcade.PhysicsEngineSimple(self.linkCharacter.player_sprite, self.wall_list)
 
     def on_draw(self):
         """ Render the screen. """
         arcade.start_render()
         # Your drawing code goes here
-        UI.draw_UI(self)
+        UI.draw_UI(self, self.linkCharacter)
         self.coin_list.draw()
-        self.player_list.draw()
+        self.linkCharacter.player_list.draw()
         self.wall_list.draw()
 
     def update(self, delta_time):
         """ All the logic to move, and the game logic goes here. """
         self.physics_engine.update()
-        Camera.update_camera(self)
+        Camera.update_camera(self, self.linkCharacter)
 
     def on_key_press(self, key, modifiers):
         """Called whenever a key is pressed. """
         if key == arcade.key.UP or key == arcade.key.W:
-            self.player_list[0].change_y = Link.PLAYER_MOVEMENT_SPEED
+            self.characters[0].player_list[0].change_y = Link.PLAYER_MOVEMENT_SPEED
         elif key == arcade.key.DOWN or key == arcade.key.S:
-            self.player_list[0].change_y = -Link.PLAYER_MOVEMENT_SPEED
+            self.characters[0].player_list[0].change_y = -Link.PLAYER_MOVEMENT_SPEED
         elif key == arcade.key.LEFT or key == arcade.key.A:
-            self.player_list[0].change_x = -Link.PLAYER_MOVEMENT_SPEED
+            self.characters[0].player_list[0].change_x = -Link.PLAYER_MOVEMENT_SPEED
         elif key == arcade.key.RIGHT or key == arcade.key.D:
-            self.player_list[0].change_x = Link.PLAYER_MOVEMENT_SPEED
+            self.characters[0].player_list[0].change_x = Link.PLAYER_MOVEMENT_SPEED
         elif key == arcade.key.E:
-            Link.lose_health(self, 3)
+            self.linkCharacter.gain_health(3)
         elif key == arcade.key.Q:
-            Link.gain_health(self, 3)
+            self.linkCharacter.lose_health(3)
         elif key == arcade.key.G:
 
             gulrot1 = RawFoodObject(0.1, "Gulrot", Veggies.Carrot)
-            self.InventoryLink.append_to_inventory(gulrot1)
-            print(self.InventoryLink.get_Inventory_Contents()[0].get_name())
+            self.linkCharacter.InventoryLink.append_to_inventory(gulrot1)
+            print(self.linkCharacter.InventoryLink.get_Inventory_Contents()[0].get_name())
 
     def on_key_release(self, key, modifiers):
         if key == arcade.key.UP or key == arcade.key.W:
-            self.player_list[0].change_y = 0
+            self.characters[0].player_list[0].change_y = 0
         elif key == arcade.key.DOWN or key == arcade.key.S:
-            self.player_list[0].change_y = 0
+            self.characters[0].player_list[0].change_y = 0
         elif key == arcade.key.LEFT or key == arcade.key.A:
-            self.player_list[0].change_x = 0
+            self.characters[0].player_list[0].change_x = 0
         elif key == arcade.key.RIGHT or key == arcade.key.D:
-            self.player_list[0].change_x = 0
+            self.characters[0].player_list[0].change_x = 0
