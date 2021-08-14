@@ -4,7 +4,7 @@ import arcade
 
 import Link
 
-COIN_COUNT = 20
+COIN_COUNT = 0
 SPRITE_SCALING_COIN = 0.1
 
 

@@ -7,13 +7,14 @@ import Walls
 
 # Dtte er enkle imports for at det skal få tilgang til de andre filene
 # self referer til seg selv, slik at det er objektet som kaller koden på seg selv, om seg selv.
-from Enumerators import Veggies
+from Enumerators import Veggies, Icons
 from Items.RawFoodObject import RawFoodObject
 
 
 class LonLonRanch(arcade.Window):
     """ Main application class. """
     link_character = 0
+    inventory_show = False
 
     # Dette er konstruktøren til Classen LonLonRanch, som arver fra Window classen i Arcade.
     def __init__(self, width, height):
@@ -44,12 +45,16 @@ class LonLonRanch(arcade.Window):
         UI.draw_UI(self, self.link_character)
         self.coin_list.draw()
         self.link_character.player_list.draw()
+        if self.inventory_show:
+            self.link_character.InventoryLink.inventory_list.draw()
+            self.link_character.InventoryLink.inventory_contents_sprite_list.draw()
         self.wall_list.draw()
 
     def update(self, delta_time):
         """ All the logic to move, and the game logic goes here. """
         self.physics_engine.update()
         Camera.update_camera(self, self.link_character)
+        self.link_character.InventoryLink.update_position()
 
     def on_key_press(self, key, modifiers):
         """Called whenever a key is pressed. """
@@ -67,16 +72,23 @@ class LonLonRanch(arcade.Window):
                     self.link_character.gain_health(
                         self.link_character.InventoryLink.get_inventory_contents().pop().get_healing_value())
                     print("Gulrot spist")
-                    print(len(self.link_character.InventoryLink.get_inventory_contents()))
+                    self.link_character.InventoryLink.inventory_contents_sprite_list.pop()
+
             except IndexError:
                 print("Out of carrots")
         elif key == arcade.key.Q:
             self.link_character.lose_health(3)
         elif key == arcade.key.G:
 
-            gulrot1 = RawFoodObject(0.1, "Gulrot", Veggies.Carrot, 3)
+            gulrot1 = RawFoodObject(0.1, "Gulrot", Veggies.Carrot, 3, Icons.Carrot.value)
             self.link_character.InventoryLink.append_to_inventory(gulrot1)
+            self.link_character.InventoryLink.update_contents()
             print(self.link_character.InventoryLink.get_inventory_contents()[0].get_name())
+        elif key == arcade.key.I:
+            if self.inventory_show:
+                self.inventory_show = False
+            elif not self.inventory_show:
+                self.inventory_show = True
 
     def on_key_release(self, key, modifiers):
         if key == arcade.key.UP or key == arcade.key.W:

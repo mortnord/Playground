@@ -37,7 +37,6 @@ def update_camera(self, link_character):
     if changed:
         self.view_bottom = int(self.view_bottom)
         self.view_left = int(self.view_left)
-
         arcade.set_viewport(self.view_left,
                             self.width + self.view_left,
                             self.view_bottom,
