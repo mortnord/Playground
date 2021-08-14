@@ -2,6 +2,8 @@ import random
 
 import arcade
 
+import Link
+
 COIN_COUNT = 20
 SPRITE_SCALING_COIN = 0.1
 
@@ -17,6 +19,5 @@ def setup_coins(self):
         # Position the coin
         coin.center_x = random.randrange(600)
         coin.center_y = random.randrange(600)
-
         # Add the coin to the lists
         self.coin_list.append(coin)

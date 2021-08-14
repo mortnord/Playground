@@ -11,8 +11,8 @@ def setup_link(self):
     # Create the sprite lists
     self.player_list = arcade.SpriteList()
 
-    # Score
-    self.score = 0
+    # Liv
+    self.health = 12
 
     # Set up the player
     self.player_sprite = arcade.Sprite("Sprites/Link.png", SPRITE_SCALING_PLAYER)
@@ -21,3 +21,13 @@ def setup_link(self):
     self.player_list.append(self.player_sprite)
 
     self.physics_engine = arcade.PhysicsEngineSimple(self.player_sprite, self.wall_list)
+
+
+def lose_health(self, amount):
+    self.health = self.health - amount
+    pass
+
+
+def gain_health(self, amount):
+    self.health = self.health + amount
+    pass

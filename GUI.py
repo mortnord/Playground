@@ -2,6 +2,7 @@ import arcade
 import Camera
 import Link
 import Objects
+import UI
 import Walls
 
 
@@ -22,6 +23,7 @@ class LonLonRanch(arcade.Window):
 
     # Setup kalles 1 gang i Main.Py, for å sette opp vinduet.
     def setup(self):
+
         # Her kaller vi de 3 metodene i de 3 forskjellige .py filene,for å ha orden i koden, og ikke en veldig lang fil.
         Walls.setup_walls(self)
         Link.setup_link(self)
@@ -31,8 +33,10 @@ class LonLonRanch(arcade.Window):
         """ Render the screen. """
         arcade.start_render()
         # Your drawing code goes here
+        UI.draw_UI(self)
         self.coin_list.draw()
         self.player_list.draw()
+        self.wall_list.draw()
 
     def update(self, delta_time):
         """ All the logic to move, and the game logic goes here. """
@@ -49,6 +53,10 @@ class LonLonRanch(arcade.Window):
             self.player_sprite.change_x = -Link.PLAYER_MOVEMENT_SPEED
         elif key == arcade.key.RIGHT or key == arcade.key.D:
             self.player_sprite.change_x = Link.PLAYER_MOVEMENT_SPEED
+        elif key == arcade.key.E:
+            Link.lose_health(self, 3)
+        elif key == arcade.key.Q:
+            Link.gain_health(self, 3)
 
     def on_key_release(self, key, modifiers):
         if key == arcade.key.UP or key == arcade.key.W:
