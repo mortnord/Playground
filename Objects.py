@@ -1,9 +1,13 @@
-'''
+import random
 
+import arcade
 
 COIN_COUNT = 20
 SPRITE_SCALING_COIN = 0.1
 
+
+def setup_coins(self):
+    self.coin_list = arcade.SpriteList()
     # Create the coins
     for i in range(COIN_COUNT):
         # Create the coin instance
@@ -16,4 +20,3 @@ SPRITE_SCALING_COIN = 0.1
 
         # Add the coin to the lists
         self.coin_list.append(coin)
-    '''
