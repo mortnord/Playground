@@ -2,6 +2,7 @@ import arcade
 import Camera
 import Link
 import Objects
+import SetupObjects
 import UI
 import Walls
 
@@ -35,7 +36,7 @@ class LonLonRanch(arcade.Window):
         self.link_character = Link.LinkCharacter()
         self.characters.append(self.link_character)
         Objects.setup_coins(self)
-
+        SetupObjects.setup_objects()
         self.physics_engine = arcade.PhysicsEngineSimple(self.link_character.player_sprite, self.wall_list)
 
     def on_draw(self):
@@ -54,7 +55,6 @@ class LonLonRanch(arcade.Window):
         """ All the logic to move, and the game logic goes here. """
         self.physics_engine.update()
         Camera.update_camera(self, self.link_character)
-        self.link_character.InventoryLink.update_position()
 
     def on_key_press(self, key, modifiers):
         """Called whenever a key is pressed. """
@@ -68,22 +68,22 @@ class LonLonRanch(arcade.Window):
             self.characters[0].player_list[0].change_x = Link.PLAYER_MOVEMENT_SPEED
         elif key == arcade.key.E:
             try:
-                if self.link_character.InventoryLink.get_inventory_contents()[0].get_type() == Veggies.Carrot:
+                if self.link_character.InventoryLink.get_inventory_contents()[0].get_type() == Veggies:
                     self.link_character.gain_health(
                         self.link_character.InventoryLink.get_inventory_contents().pop().get_healing_value())
                     print("Gulrot spist")
+                    self.link_character.InventoryLink.items_in_food_inventory = self.link_character.InventoryLink.items_in_food_inventory - 1
                     self.link_character.InventoryLink.inventory_contents_sprite_list.pop()
-
             except IndexError:
                 print("Out of carrots")
         elif key == arcade.key.Q:
             self.link_character.lose_health(3)
         elif key == arcade.key.G:
-
-            gulrot1 = RawFoodObject(0.1, "Gulrot", Veggies.Carrot, 3, Icons.Carrot.value)
-            self.link_character.InventoryLink.append_to_inventory(gulrot1)
-            self.link_character.InventoryLink.update_contents()
-            print(self.link_character.InventoryLink.get_inventory_contents()[0].get_name())
+            if len(self.link_character.InventoryLink.inventory_contents) <= 7:
+                self.link_character.InventoryLink.append_to_inventory(RawFoodObject(0.1, "Gulrot", Veggies, 3, Icons.Carrot.value))
+                print("Gulrot generert")
+            else:
+                print("Food inventory fult")
         elif key == arcade.key.I:
             if self.inventory_show:
                 self.inventory_show = False

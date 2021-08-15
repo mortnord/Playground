@@ -9,7 +9,7 @@ class RawFoodObject(FoodObject):
         self.name = name
         self.raw_food_type = raw_food_type
         self.healing_value = healing_value
-        self.icon = arcade.Sprite(icon, 0.1)
+        self.icon = arcade.Sprite(icon, 0.04)
 
     def get_type(self):
         return self.raw_food_type

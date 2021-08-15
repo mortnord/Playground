@@ -1,8 +1,8 @@
 import arcade
 # Kamera sine yttre begrensning før man flytter kameraet
-LEFT_VIEWPORT_MARGIN = 250
-RIGHT_VIEWPORT_MARGIN = 250
-BOTTOM_VIEWPORT_MARGIN = 50
+LEFT_VIEWPORT_MARGIN = 100
+RIGHT_VIEWPORT_MARGIN = 100
+BOTTOM_VIEWPORT_MARGIN = 100
 TOP_VIEWPORT_MARGIN = 100
 
 
@@ -35,6 +35,8 @@ def update_camera(self, link_character):
 
     # Faktisk endre kamera
     if changed:
+
+        self.link_character.InventoryLink.update_position()
         self.view_bottom = int(self.view_bottom)
         self.view_left = int(self.view_left)
         arcade.set_viewport(self.view_left,
