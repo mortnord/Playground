@@ -4,16 +4,15 @@ from Inventory import Inventory
 from MainCharacters import MainCharacters
 
 
-
 class LinkCharacter(MainCharacters):
-    SPRITE_SCALING_PLAYER = 0.05
-    PLAYER_MOVEMENT_SPEED = 3
+    SPRITE_SCALING_PLAYER = 0.05  # Konstant med skalering av størrelse
+    PLAYER_MOVEMENT_SPEED = 3  # Konstant med fart i bevegelse
+
+    # noinspection PyMissingConstructor
     def __init__(self):
-
-
         # Lager spriteListen som skal tegnes
         self.player_list = arcade.SpriteList()
-        # start Liv
+        # starter Liv
         self.health = 12
         # Lager Inventory til Link
         self.InventoryLink = Inventory()
@@ -24,7 +23,5 @@ class LinkCharacter(MainCharacters):
         self.player_sprite.center_y = 50
         # Legger til for å tegnes
         self.player_list.append(self.player_sprite)
-
-
 
 # https://api.arcade.academy/en/latest/examples/platform_tutorial/step_01.html
