@@ -15,7 +15,7 @@ class Malon(MainCharacters):
         # start Liv
         self.health = 12
         # Lager Inventory til Link
-        self.InventoryLink = Inventory()
+        self.inventory_character = Inventory()
         # Kobler sprite .pngen til koden
         self.player_sprite = arcade.Sprite("Sprites/Malon.png", self.SPRITE_SCALING_PLAYER)
         # startposisjon
@@ -23,3 +23,4 @@ class Malon(MainCharacters):
         self.player_sprite.center_y = 50
         # Legger til for å tegnes
         self.player_list.append(self.player_sprite)
+        self.show_inventory = False

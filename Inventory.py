@@ -57,7 +57,6 @@ class Inventory:
         self.inventory_contents_sprite_list_position_x.clear()
         self.inventory_contents_sprite_list_position_y.clear()
         self.update_sprite_position()
-        self.reorder_contents()
         pass
 
     def update_sprite_position(self): # : TODO : Gjøres mer elegant, og til en bedre måte...

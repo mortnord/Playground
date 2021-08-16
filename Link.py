@@ -15,7 +15,7 @@ class LinkCharacter(MainCharacters):
         # starter Liv
         self.health = 12
         # Lager Inventory til Link
-        self.InventoryLink = Inventory()
+        self.inventory_character = Inventory()
         # Kobler sprite .pngen til koden
         self.player_sprite = arcade.Sprite("Sprites/Link.png", self.SPRITE_SCALING_PLAYER)
         # startposisjon
@@ -23,5 +23,6 @@ class LinkCharacter(MainCharacters):
         self.player_sprite.center_y = 50
         # Legger til for å tegnes
         self.player_list.append(self.player_sprite)
+        self.show_inventory = False
 
 # https://api.arcade.academy/en/latest/examples/platform_tutorial/step_01.html

@@ -2,6 +2,7 @@ import arcade
 
 from Items.FoodObject import FoodObject
 
+
 # Ett RawFoodObjekt skal brukes når man ønsker ett raw food (type carrot osv), den har healing verdi, sprite og er ett
 # vanlig objekt i verdenen.
 class RawFoodObject(FoodObject):

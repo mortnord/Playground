@@ -6,5 +6,7 @@ def setup_walls(self):
     self.wall_list = arcade.SpriteList(use_spatial_hash=True)
     wall = arcade.Sprite("Sprites/boxCrate.png", 1)
     # her setter vi posisjonen og legger den til i lista over walls som skal tegnes
-    wall.position = [50, 200]
+
+    wall.center_x = 50
+    wall.center_y = 200
     self.wall_list.append(wall)
