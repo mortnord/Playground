@@ -66,6 +66,7 @@ class LonLonRanch(arcade.Window):
         arcade.start_render()
         # Your drawing code goes here
         UI.draw_UI(self, self.characters)  # Vi tegner UI
+        self.characters[0].inventory_character.inventory_content_sprite_list_bar.draw()
         for x in range(
                 len(self.characters)):  # Her tegner vi begge characters, og for begge characters, vis inventory skal vises tegn inventory. TODO: Split inventory slik at 1 person kan åpne den om gangen
             self.characters[x].player_list.draw()
