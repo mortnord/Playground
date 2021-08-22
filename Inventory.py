@@ -3,6 +3,12 @@ import arcade
 INVENTORY_SCALING = 2  # Konstant for størrelse
 
 
+class InventoryPosition:
+    def __init__(self, PosX, PosY):
+        self.PosX = PosX
+        self.PosY = PosY
+
+
 class Inventory:
     def __init__(self):
         self.inventory_contents = list()  # Lag liste over innholdet i inventory
@@ -13,11 +19,9 @@ class Inventory:
         self.inventory_contents_sprite_list = arcade.SpriteList()  # Lag liste over hva innhold i inventory som skal
         # tegnes
 
-        self.inventory_contents_sprite_list_position_y = list()  # Y-posisjonen til ting som skal tegnes
-        self.inventory_contents_sprite_list_position_x = list()  # X-posisjonen til ting som skal tegnes
+        self.inventory_contents_sprite_list_position = list()  # Posisjonen til ting som skal tegnes
 
-        self.inventory_contents_bar_sprite_list_position_x = list()
-        self.inventory_contents_bar_sprite_list_position_y = list()
+        self.inventory_contents_bar_sprite_list_position = list()
         # TODO: Gjør dette mer elegant...
 
         # Kobler sprite .pngen til koden
@@ -28,8 +32,27 @@ class Inventory:
         self.inventory_list.append(self.inventory_sprite)
         self.inventory_content_sprite_list_bar.append(self.inventory_sprite_bar)
         self.items_in_food_inventory = 0  # antall objekter i food inventory
-
+        self.setup_sprite_position()
         self.update_sprite_position()  # Posisjonen til sprites i inventory
+
+    def setup_sprite_position(self):
+        for x in range(8):
+            try:
+                if x <= 3:
+                    PosX = InventoryPosition(self.inventory_sprite.top - 15, self.inventory_sprite.left + (x * 31) + 18)
+                    self.inventory_contents_sprite_list_position.append(PosX)
+                elif x >= 4:
+                    PosX = InventoryPosition(self.inventory_sprite.top - 45,(x * 31) + 18 - 124)
+                    self.inventory_contents_sprite_list_position.append(PosX)
+            except IndexError:
+                print("ERROR")
+        for x in range(2):
+            try:
+                self.inventory_contents_bar_sprite_list_position[x].PosX = self.inventory_sprite_bar.top - 15
+                self.inventory_contents_bar_sprite_list_position[x].PosY = self.inventory_sprite_bar.left + (
+                            x * 31) + 18
+            except IndexError:
+                pass
 
     def update_contents(self):
 
@@ -41,8 +64,8 @@ class Inventory:
     def reorder_contents(self):  # sett posisjonen til iconene avhengig av posisjonen til inventory og inventory slots
         for x in range(len(self.inventory_contents)):
             try:
-                self.inventory_contents[x].icon.center_y = self.inventory_contents_sprite_list_position_y[x]
-                self.inventory_contents[x].icon.center_x = self.inventory_contents_sprite_list_position_x[x]
+                self.inventory_contents[x].icon.center_y = self.inventory_contents_sprite_list_position[x].PosX
+                self.inventory_contents[x].icon.center_x = self.inventory_contents_sprite_list_position[x].PosY
             except IndexError:
                 pass
         for x in range(2):
@@ -68,28 +91,26 @@ class Inventory:
         self.inventory_sprite.center_y = view_bottom + 200
         self.inventory_sprite_bar.center_x = view_left + 150
         self.inventory_sprite_bar.center_y = view_bottom + 40
-        self.inventory_contents_sprite_list_position_x.clear()
-        self.inventory_contents_sprite_list_position_y.clear()
-        self.inventory_contents_bar_sprite_list_position_x.clear()
-        self.inventory_contents_bar_sprite_list_position_y.clear()
         self.update_sprite_position()
+        self.reorder_contents()
         pass
 
     def update_sprite_position(self):  # : TODO : Gjøres mer elegant, og til en bedre måte...
         for x in range(8):
             try:
                 if x <= 3:
-                    self.inventory_contents_sprite_list_position_y.append(self.inventory_sprite.top - 15)
-                    self.inventory_contents_sprite_list_position_x.append(self.inventory_sprite.left + (x * 31) + 18)
+                    self.inventory_contents_sprite_list_position[x].PosX = self.inventory_sprite.top - 15
+                    self.inventory_contents_sprite_list_position[x].PosY = self.inventory_sprite.left + (x * 31) + 18
                 elif x >= 4:
-                    self.inventory_contents_sprite_list_position_y.append(self.inventory_sprite.top - 45)
-                    self.inventory_contents_sprite_list_position_x.append(
-                        self.inventory_sprite.left + (x * 31) + 18 - 124)
+                    self.inventory_contents_sprite_list_position[x].PosX = self.inventory_sprite.top - 45
+                    self.inventory_contents_sprite_list_position[x].PosY = self.inventory_sprite.left + (
+                                x * 31) + 18 - 124
             except IndexError:
-                pass
+                print("ERROR")
         for x in range(2):
             try:
-                self.inventory_contents_bar_sprite_list_position_y.append(self.inventory_sprite_bar.top - 15)
-                self.inventory_contents_bar_sprite_list_position_x.append(self.inventory_sprite_bar.left + (x * 31) + 18)
+                self.inventory_contents_bar_sprite_list_position[x].PosX = self.inventory_sprite_bar.top - 15
+                self.inventory_contents_bar_sprite_list_position[x].PosY = self.inventory_sprite_bar.left + (
+                            x * 31) + 18
             except IndexError:
                 pass
