@@ -7,3 +7,5 @@ SCREEN_HEIGHT = 600
 game = GUI.LonLonRanch(SCREEN_WIDTH, SCREEN_HEIGHT, "Lon Lon Ranch")
 game.setup()
 arcade.run()
+
+##Test for å se om KJ ser forskjell
