@@ -26,5 +26,6 @@ class LinkCharacter(MainCharacters):
         self.show_inventory = False
 
         #Testing
+        #Ekstra test
 
 # https://api.arcade.academy/en/latest/examples/platform_tutorial/step_01.html
