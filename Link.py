@@ -25,4 +25,6 @@ class LinkCharacter(MainCharacters):
         self.player_list.append(self.player_sprite)
         self.show_inventory = False
 
+        #Testing
+
 # https://api.arcade.academy/en/latest/examples/platform_tutorial/step_01.html
