@@ -12,7 +12,7 @@ class MainCharacters:
         if self.health <= 0:
             self.health = 0
             print("Out of health")
-            self.player_sprite.center_x = 50 # Sentrerer spiller til utgangspunktet når tom for liv
+            self.player_sprite.center_x = 70 # Sentrerer spiller til utgangspunktet når tom for liv
             self.player_sprite.center_y = 50
             self.health = 12                 # Tilbakestiller liv til 12 når tom for liv
             self.inventory_character.get_inventory_contents().clear()
