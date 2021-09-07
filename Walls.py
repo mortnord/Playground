@@ -10,3 +10,4 @@ def setup_walls(self):
     wall.center_x = 50
     wall.center_y = 200
     self.wall_list.append(wall)
+# Her har KJ kommentert :)
