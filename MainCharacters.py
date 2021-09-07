@@ -11,6 +11,7 @@ class MainCharacters:
         self.health = self.health - amount
         if self.health < 0:
             self.health = 0
+            print("Out of health")
         pass
 
     def gain_health(self, amount):
