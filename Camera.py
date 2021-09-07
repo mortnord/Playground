@@ -36,7 +36,6 @@ def update_camera(self, current_character):
     # Faktisk endre kamera
     if changed:
 
-        self.characters[0].inventory_character.update_position(self.view_left, self.view_bottom)
         self.view_bottom = int(self.view_bottom)
         self.view_left = int(self.view_left)
         arcade.set_viewport(self.view_left,

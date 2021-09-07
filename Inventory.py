@@ -93,6 +93,7 @@ class Inventory:
         self.inventory_sprite_bar.center_y = view_bottom + 40
         self.update_sprite_position()
         self.reorder_contents()
+
         pass
 
     def update_sprite_position(self):  # : TODO : Gjøres mer elegant, og til en bedre måte...

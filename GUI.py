@@ -85,16 +85,18 @@ class LonLonRanch(arcade.Window):
         self.physics_engine1.update()
 
         Camera.update_camera(self, self.characters[0])  # Oppdater kamera
+        self.characters[0].inventory_character.update_position(self.view_left, self.view_bottom)
+
 
     def on_key_press(self, key, modifiers):
         """Called whenever a key is pressed. """
         if key == arcade.key.UP or key == arcade.key.W:  # WASD eller piltast bevegelse
             self.characters[0].player_list[0].change_y = self.characters[0].PLAYER_MOVEMENT_SPEED
-        elif key == arcade.key.DOWN or key == arcade.key.S:
+        if key == arcade.key.DOWN or key == arcade.key.S:
             self.characters[0].player_list[0].change_y = -self.characters[0].PLAYER_MOVEMENT_SPEED
-        elif key == arcade.key.LEFT or key == arcade.key.A:
+        if key == arcade.key.LEFT or key == arcade.key.A:
             self.characters[0].player_list[0].change_x = -self.characters[0].PLAYER_MOVEMENT_SPEED
-        elif key == arcade.key.RIGHT or key == arcade.key.D:
+        if key == arcade.key.RIGHT or key == arcade.key.D:
             self.characters[0].player_list[0].change_x = self.characters[0].PLAYER_MOVEMENT_SPEED
         elif key == arcade.key.E:  # Denne er mer komplisert, først sjekk om siste lagt inn object i inventory er food,
             # og vis det er, så få liv avhengig av hvor mye healing value til objektet er.
@@ -138,13 +140,13 @@ class LonLonRanch(arcade.Window):
     def on_key_release(self, key, modifiers):  # Her sjekker vi om knappene er blitt releaset, for å stoppe å bevege seg
         if key == arcade.key.UP or key == arcade.key.W:
             self.characters[0].player_list[0].change_y = 0
-        elif key == arcade.key.DOWN or key == arcade.key.S:
+        if key == arcade.key.DOWN or key == arcade.key.S:
             self.characters[0].player_list[0].change_y = 0
-        elif key == arcade.key.LEFT or key == arcade.key.A:
+        if key == arcade.key.LEFT or key == arcade.key.A:
             self.characters[0].player_list[0].change_x = 0
-        elif key == arcade.key.RIGHT or key == arcade.key.D:
+        if key == arcade.key.RIGHT or key == arcade.key.D:
             self.characters[0].player_list[0].change_x = 0
-        elif key == arcade.key.SPACE:
+        if key == arcade.key.SPACE:
             self.characters[0].player_list[0].change_x = 0
             self.characters[0].player_list[0].change_y = 0
             self.characters[1].player_list[0].change_y = 0
