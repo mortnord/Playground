@@ -9,6 +9,8 @@ class MainCharacters:
     def lose_health(self, amount):
         # Metoden man kaller for å miste liv
         self.health = self.health - amount
+        if self.health < 0:
+            self.health = 0
         pass
 
     def gain_health(self, amount):
