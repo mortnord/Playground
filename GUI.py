@@ -53,8 +53,7 @@ class LonLonRanch(arcade.Window):
 
         self.link_character = Link.LinkCharacter()  # Her generer vi link karakteren
         self.malon_character = Malon.Malon()  # Her generer vi malon karakteren
-        self.characters.append(
-            self.link_character)  # Her legger vi begge characters inn i lista over spillbare characters
+        self.characters.append(self.link_character)  # Her legger vi begge characters inn i lista over spillbare characters
         self.characters.append(self.malon_character)
         SetupObjects.setup_objects()  # Her kobler vi .png med objektene vi kan ha i inventory, slik at de blir loadet når spillet starter.
         self.physics_engine = arcade.PhysicsEngineSimple(self.link_character.player_sprite,
@@ -92,11 +91,11 @@ class LonLonRanch(arcade.Window):
         """Called whenever a key is pressed. """
         if key == arcade.key.UP or key == arcade.key.W:  # WASD eller piltast bevegelse
             self.characters[0].player_list[0].change_y = self.characters[0].PLAYER_MOVEMENT_SPEED
-        if key == arcade.key.DOWN or key == arcade.key.S:
+        elif key == arcade.key.DOWN or key == arcade.key.S:
             self.characters[0].player_list[0].change_y = -self.characters[0].PLAYER_MOVEMENT_SPEED
-        if key == arcade.key.LEFT or key == arcade.key.A:
+        elif key == arcade.key.LEFT or key == arcade.key.A:
             self.characters[0].player_list[0].change_x = -self.characters[0].PLAYER_MOVEMENT_SPEED
-        if key == arcade.key.RIGHT or key == arcade.key.D:
+        elif key == arcade.key.RIGHT or key == arcade.key.D:
             self.characters[0].player_list[0].change_x = self.characters[0].PLAYER_MOVEMENT_SPEED
         elif key == arcade.key.E:  # Denne er mer komplisert, først sjekk om siste lagt inn object i inventory er food,
             # og vis det er, så få liv avhengig av hvor mye healing value til objektet er.
@@ -140,13 +139,13 @@ class LonLonRanch(arcade.Window):
     def on_key_release(self, key, modifiers):  # Her sjekker vi om knappene er blitt releaset, for å stoppe å bevege seg
         if key == arcade.key.UP or key == arcade.key.W:
             self.characters[0].player_list[0].change_y = 0
-        if key == arcade.key.DOWN or key == arcade.key.S:
+        elif key == arcade.key.DOWN or key == arcade.key.S:
             self.characters[0].player_list[0].change_y = 0
-        if key == arcade.key.LEFT or key == arcade.key.A:
+        elif key == arcade.key.LEFT or key == arcade.key.A:
             self.characters[0].player_list[0].change_x = 0
-        if key == arcade.key.RIGHT or key == arcade.key.D:
+        elif key == arcade.key.RIGHT or key == arcade.key.D:
             self.characters[0].player_list[0].change_x = 0
-        if key == arcade.key.SPACE:
+        elif key == arcade.key.SPACE:
             self.characters[0].player_list[0].change_x = 0
             self.characters[0].player_list[0].change_y = 0
             self.characters[1].player_list[0].change_y = 0
