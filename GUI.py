@@ -5,83 +5,64 @@ import Link
 import Malon
 import SetupObjects
 import UI
-import Walls
-# Dtte er enkle imports for at det skal få tilgang til de andre filene
-# self referer til seg selv, slik at det er objektet som kaller koden på seg selv, om seg selv.
+
 from Enumerators import TypeOfObject
 
+# Her importerer vi nødvendige filer, relativt sipelt
+
+# Her setter vi de forskjellige layersa som tegnes på kartet, burde gjøres bedre
+# TODO : Mindre hardcoding
 LAYER_NAME_BACKGROUND = "Bakke"
 LAYER_NAME_DONT_TOUCH = "Gjerder"
 
-# Her henter jeg inn enumerators, en slags fast verdi som jeg kan referere til en plass, og bruke andre plasser.
 
-def swapPositions(list_to_be_swapped, pos1, pos2):
-    # popping both the elements from list_to_be_swapped
+def swapPositions(list_to_be_swapped, pos1, pos2):  # Denne funksjonen bytter plass på 2 objekter i den samme listen,
+    # i vårt tilfelle så bytter den mellom hovedperson og ikke hovedperson
+
     first_ele = list_to_be_swapped.pop(pos1)
     second_ele = list_to_be_swapped.pop(pos2 - 1)
 
-    # inserting in each others positions
     list_to_be_swapped.insert(pos1, second_ele)
     list_to_be_swapped.insert(pos2, first_ele)
 
 
 class LonLonRanch(arcade.Window):
     """ Main application class. """
-    link_character = 0
-    malon_character = 0
-    inventory_show = False
 
-    view_bottom = 0
-    view_left = 0
-
-    # Layer Names from our TileMap
-    # Our TileMap Object
-
-
-    # Dette er konstruktøren til Classen LonLonRanch, som arver fra Window classen i Arcade.
     def __init__(self, width, height, title):
-        # Her caller vi super-classen (den vi arver fra), sin __init__ metode, for å starte opp tegningen av vinduet.
+
         super().__init__(width, height, title, resizable=True)
 
-        # Our Scene Object
+
+        #Her setter vi initial verdiene til variabler
         self.scene = None
-        # Setter bakgrunnen
         self.characters = list()
-        arcade.set_background_color(arcade.color.AMAZON)
-        # Setter hjørne for kamera
         self.view_bottom = 0
         self.view_left = 0
 
-        # Track the current state of what key is pressed
         self.left_pressed = False
         self.right_pressed = False
         self.up_pressed = False
         self.down_pressed = False
-        # Our TileMap Object
         self.tile_map = None
 
 
-    # Setup kalles 1 gang i Main.Py, for å sette opp vinduet.
     def on_resize(self, width: float, height: float):
-        super().on_resize(width, height)
+        super().on_resize(width, height) ##Denne gjør at vi kan gjøre vinduet mindre og større
 
     def setup(self):
 
+        self.scene = arcade.Scene() #Opprettet scene-objektet, som skal samle alt som skal tegnes hver gang.
 
-        # Initialize Scene
-        self.scene = arcade.Scene()
-        Walls.setup_walls(self)  # Først lager vi veggene, som våre sprites kan krasje i
+        self.link_character = Link.LinkCharacter() ##Opprettelse av Link og Malon objektene
+        self.malon_character = Malon.Malon()
 
-        self.link_character = Link.LinkCharacter()  # Her generer vi link karakteren
-        self.malon_character = Malon.Malon()  # Her generer vi malon karakteren
-
-        self.characters.append(self.link_character)  # Her legger vi begge characters inn i lista over spillbare characters
+        self.characters.append(self.link_character) #Her legger vi dem til i lista over karakter
         self.characters.append(self.malon_character)
 
-        SetupObjects.setup_objects()  # Her kobler vi .png med objektene vi kan ha i inventory, slik at de blir loadet når spillet starter.
+        SetupObjects.setup_objects() # Her lager vi alle ting-objektene og laster in bilder.
 
-
-        # Name of map file to load
+        ##Dette er hva kart som skal lastes, #TODO : Mindre hardcoding
         map_name = "TiledMaps/Bakgroundskart_med_flisesett.json"
 
         # Layer specific options are defined based on Layer names in a dictionary
@@ -100,55 +81,57 @@ class LonLonRanch(arcade.Window):
         # Initialize Scene with our TileMap, this will automatically add all layers
         # from the map as SpriteLists in the scene in the proper order.
         self.scene = arcade.Scene.from_tilemap(self.tile_map)
+
+        #Her lager vi en sprite list for spillbare karakterer
+        self.scene.add_sprite_list("Players")
+        #Her legger vi inn sprites i overnevnte liste
+        self.scene.add_sprite("Players", self.malon_character.player_sprite)
+        self.scene.add_sprite("Players", self.link_character.player_sprite)
+        #Her sier vi hva fysikken skal håndtere, alså ikke krasj med denne listen med objekter
         self.physics_engine = arcade.PhysicsEngineSimple(self.link_character.player_sprite,
                                                          self.scene.get_sprite_list(
-                                                             LAYER_NAME_DONT_TOUCH))  # Her setter vi fysikkenginene som driver collisions og annet
+                                                             LAYER_NAME_DONT_TOUCH))
         self.physics_engine1 = arcade.PhysicsEngineSimple(self.malon_character.player_sprite,
                                                           self.scene.get_sprite_list(LAYER_NAME_DONT_TOUCH))
+
     def on_draw(self):
         """ Render the screen. """
-        arcade.start_render()
+        arcade.start_render() #Denne tømmer bilde, og gjør klart for nytt bilde
 
-        self.scene.draw()
-        # Your drawing code goes here
-        UI.draw_UI(self, self.characters)  # Vi tegner UI
-        self.characters[0].inventory_character.inventory_content_sprite_list_bar.draw()
-        for x in range(
-                len(self.characters)):  # Her tegner vi begge characters, og for begge characters, vis inventory skal vises tegn inventory. TODO: Split inventory slik at 1 person kan åpne den om gangen
-            self.characters[x].player_list.draw()
+        UI.draw_UI(self, self.characters)  #Her tegner vi UIet
+        self.characters[0].inventory_character.inventory_content_sprite_list_bar.draw() #Denne tegner nedre item baren
+        for x in range(len(self.characters)): ##Her tegner vi inventory vis det skal vises på den karakteren.
             if self.characters[x].show_inventory:
                 self.characters[x].inventory_character.inventory_list.draw()
                 self.characters[x].inventory_character.inventory_contents_sprite_list.draw()
 
-        self.wall_list.draw()  # Her tegner vi veggene
-
+        self.scene.draw() ##Her tegnes alt som er lagt til i scene objektet.
 
     def update(self, delta_time):
         """ All the logic to move, and the game logic goes here. """
 
-        ## hit_collision_detected_list = arcade.check_for_collision_with_list(self.characters[0].player_list[0], self.wall_list)
-        self.physics_engine.update()  # Oppdater fysikk
+        self.physics_engine.update() #Denne oppdater fysikken, og sjekker for kollisjoner osv
         self.physics_engine1.update()
 
+        Camera.update_camera(self, self.characters[0]) #Denne flytter kamera etter hovedpersonen
+        self.characters[0].inventory_character.update_position(self.view_left, self.view_bottom) #Denne flytter inventory etter hovedpersonen
 
-        Camera.update_camera(self, self.characters[0])  # Oppdater kamera
-        self.characters[0].inventory_character.update_position(self.view_left, self.view_bottom)
-
-    def process_keychange(self):
-        if self.up_pressed and not self.down_pressed:
-            self.characters[0].player_list[0].change_y = self.characters[0].PLAYER_MOVEMENT_SPEED
-        elif self.down_pressed and not self.up_pressed:
-            self.characters[0].player_list[0].change_y = -self.characters[0].PLAYER_MOVEMENT_SPEED
+    def process_keychange(self): ##Her håndterer vi hva retning vi skal gå med å sjekke hva knapper som er trykket inn
+        if self.up_pressed and not self.down_pressed: #Opp, og ikke ned
+            self.characters[0].player_sprite.change_y = self.characters[0].PLAYER_MOVEMENT_SPEED
+        elif self.down_pressed and not self.up_pressed: #Ned og ikke opp
+            self.characters[0].player_sprite.change_y = -self.characters[0].PLAYER_MOVEMENT_SPEED
         else:
-            self.characters[0].player_list[0].change_y = 0
+            self.characters[0].player_sprite.change_y = 0 #Intet
 
-        if self.right_pressed and not self.left_pressed:
-            self.characters[0].player_list[0].change_x = self.characters[0].PLAYER_MOVEMENT_SPEED
-        elif self.left_pressed and not self.right_pressed:
-            self.characters[0].player_list[0].change_x = -self.characters[0].PLAYER_MOVEMENT_SPEED
+        if self.right_pressed and not self.left_pressed: #Høyre og ikke venstre
+            self.characters[0].player_sprite.change_x = self.characters[0].PLAYER_MOVEMENT_SPEED
+        elif self.left_pressed and not self.right_pressed: #Venstre og ikke høyre
+            self.characters[0].player_sprite.change_x = -self.characters[0].PLAYER_MOVEMENT_SPEED
         else:
-            self.characters[0].player_list[0].change_x = 0
-    def on_key_press(self, key, modifiers):
+            self.characters[0].player_sprite.change_x = 0 #Intet
+
+    def on_key_press(self, key, modifiers): #Denne setter flag som matcher hva knapper som er trykket
         """Called whenever a key is pressed. """
         if key == arcade.key.UP or key == arcade.key.W:
             self.up_pressed = True
@@ -161,17 +144,16 @@ class LonLonRanch(arcade.Window):
 
         self.process_keychange()
 
-        if key == arcade.key.E:  # Denne er mer komplisert, først sjekk om siste lagt inn object i inventory er food,
-            # og vis det er, så få liv avhengig av hvor mye healing value til objektet er.
-            # Så reduser mengden food i inventory med 1, og fjern objektet fra tegnelista.
+        if key == arcade.key.E:
             ## TODO: split inventory i flere biter, og kun sjekk food inventory
             try:
-                if self.characters[0].inventory_character.get_inventory_contents()[0].get_type_object() == TypeOfObject.Food:
+                if self.characters[0].inventory_character.get_inventory_contents()[
+                    0].get_type_object() == TypeOfObject.Food:
                     self.characters[0].gain_health(
                         self.characters[0].inventory_character.get_inventory_contents().pop().get_healing_value())
                     print("Gulrot spist")
                     self.characters[0].inventory_character.items_in_food_inventory = self.characters[
-                                                                                   0].inventory_character.items_in_food_inventory - 1
+                                                                                         0].inventory_character.items_in_food_inventory - 1
                     self.characters[0].inventory_character.inventory_contents_sprite_list.pop()
             except IndexError:  # Feilhåndtering vis tomt for food
                 print("Out of food")
@@ -199,8 +181,9 @@ class LonLonRanch(arcade.Window):
                 self.characters[0].show_inventory = False
         elif key == arcade.key.SPACE:  # Denne bytter plass med hvem som er hovedperson og hvem som ikke er. Uelegant
             swapPositions(self.characters, 0, 1)
+            self.characters[0].inventory_character.update_position(self.view_left,self.view_bottom)  # Denne flytter inventory etter hovedpersonen
 
-    def on_key_release(self, key, modifiers):  # Her sjekker vi om knappene er blitt releaset, for å stoppe å bevege seg
+    def on_key_release(self, key, modifiers): #Denne avflagger at knapper er trykket, slik at vi ikke får noen låste bevegelser osv
         if key == arcade.key.UP or key == arcade.key.W:
             self.up_pressed = False
             self.jump_needs_reset = False
@@ -212,8 +195,8 @@ class LonLonRanch(arcade.Window):
             self.right_pressed = False
 
         self.process_keychange()
-        if key == arcade.key.SPACE:
-            self.characters[0].player_list[0].change_x = 0
-            self.characters[0].player_list[0].change_y = 0
-            self.characters[1].player_list[0].change_y = 0
-            self.characters[1].player_list[0].change_x = 0
+        if key == arcade.key.SPACE: #Denne stopper uansett begge personer når man trykker space, kanskje unødvendig
+            self.characters[0].player_sprite.change_x = 0
+            self.characters[0].player_sprite.change_y = 0
+            self.characters[1].player_sprite.change_y = 0
+            self.characters[1].player_sprite.change_x = 0

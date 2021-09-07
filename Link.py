@@ -9,8 +9,6 @@ class LinkCharacter(MainCharacters):
 
     # noinspection PyMissingConstructor
     def __init__(self):
-        # Lager spriteListen som skal tegnes
-        self.player_list = arcade.SpriteList()
         # starter Liv
         self.health = 12
         # Lager Inventory til Link
@@ -20,8 +18,7 @@ class LinkCharacter(MainCharacters):
         # startposisjon
         self.player_sprite.center_x = 50
         self.player_sprite.center_y = 50
-        # Legger til for å tegnes
-        self.player_list.append(self.player_sprite)
+        #flag for å sjekke om inventory skal vises
         self.show_inventory = False
 
         self.PLAYER_MOVEMENT_SPEED = self.PLAYER_MOVEMENT_SPEED * 3  # Konstant med fart i bevegelse

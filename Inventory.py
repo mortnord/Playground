@@ -87,6 +87,7 @@ class Inventory:
         self.reorder_contents()
 
     def update_position(self, view_left, view_bottom):  # : TODO: Dette må gjøres mer elegant, og til en bedre måte...
+
         self.inventory_sprite.center_x = view_left + 400
         self.inventory_sprite.center_y = view_bottom + 200
         self.inventory_sprite_bar.center_x = view_left + 150

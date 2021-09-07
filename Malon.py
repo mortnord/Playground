@@ -10,8 +10,6 @@ class Malon(MainCharacters):
 
     def __init__(self):
 
-        # Lager spriteListen som skal tegnes
-        self.player_list = arcade.SpriteList()
         # start Liv
         self.health = 12
         # Lager Inventory til Link
@@ -21,8 +19,7 @@ class Malon(MainCharacters):
         # startposisjon
         self.player_sprite.center_x = 100
         self.player_sprite.center_y = 50
-        # Legger til for å tegnes
-        self.player_list.append(self.player_sprite)
+        #Flag for å sjekke om inventory skal tegnes eller ikke
         self.show_inventory = False
 
         self.PLAYER_MOVEMENT_SPEED = self.PLAYER_MOVEMENT_SPEED * 4  # Konstant med fart i bevegelse
