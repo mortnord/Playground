@@ -43,6 +43,12 @@ class LonLonRanch(arcade.Window):
         self.view_bottom = 0
         self.view_left = 0
 
+        # Track the current state of what key is pressed
+        self.left_pressed = False
+        self.right_pressed = False
+        self.up_pressed = False
+        self.down_pressed = False
+
     # Setup kalles 1 gang i Main.Py, for å sette opp vinduet.
     def on_resize(self, width: float, height: float):
         super().on_resize(width, height)
@@ -86,18 +92,34 @@ class LonLonRanch(arcade.Window):
         Camera.update_camera(self, self.characters[0])  # Oppdater kamera
         self.characters[0].inventory_character.update_position(self.view_left, self.view_bottom)
 
+    def process_keychange(self):
+        if self.up_pressed and not self.down_pressed:
+            self.characters[0].player_list[0].change_y = self.characters[0].PLAYER_MOVEMENT_SPEED
+        elif self.down_pressed and not self.up_pressed:
+            self.characters[0].player_list[0].change_y = -self.characters[0].PLAYER_MOVEMENT_SPEED
+        else:
+            self.characters[0].player_list[0].change_y = 0
 
+        if self.right_pressed and not self.left_pressed:
+            self.characters[0].player_list[0].change_x = self.characters[0].PLAYER_MOVEMENT_SPEED
+        elif self.left_pressed and not self.right_pressed:
+            self.characters[0].player_list[0].change_x = -self.characters[0].PLAYER_MOVEMENT_SPEED
+        else:
+            self.characters[0].player_list[0].change_x = 0
     def on_key_press(self, key, modifiers):
         """Called whenever a key is pressed. """
-        if key == arcade.key.UP or key == arcade.key.W:  # WASD eller piltast bevegelse
-            self.characters[0].player_list[0].change_y = self.characters[0].PLAYER_MOVEMENT_SPEED
+        if key == arcade.key.UP or key == arcade.key.W:
+            self.up_pressed = True
         elif key == arcade.key.DOWN or key == arcade.key.S:
-            self.characters[0].player_list[0].change_y = -self.characters[0].PLAYER_MOVEMENT_SPEED
+            self.down_pressed = True
         elif key == arcade.key.LEFT or key == arcade.key.A:
-            self.characters[0].player_list[0].change_x = -self.characters[0].PLAYER_MOVEMENT_SPEED
+            self.left_pressed = True
         elif key == arcade.key.RIGHT or key == arcade.key.D:
-            self.characters[0].player_list[0].change_x = self.characters[0].PLAYER_MOVEMENT_SPEED
-        elif key == arcade.key.E:  # Denne er mer komplisert, først sjekk om siste lagt inn object i inventory er food,
+            self.right_pressed = True
+
+        self.process_keychange()
+
+        if key == arcade.key.E:  # Denne er mer komplisert, først sjekk om siste lagt inn object i inventory er food,
             # og vis det er, så få liv avhengig av hvor mye healing value til objektet er.
             # Så reduser mengden food i inventory med 1, og fjern objektet fra tegnelista.
             ## TODO: split inventory i flere biter, og kun sjekk food inventory
@@ -138,14 +160,17 @@ class LonLonRanch(arcade.Window):
 
     def on_key_release(self, key, modifiers):  # Her sjekker vi om knappene er blitt releaset, for å stoppe å bevege seg
         if key == arcade.key.UP or key == arcade.key.W:
-            self.characters[0].player_list[0].change_y = 0
+            self.up_pressed = False
+            self.jump_needs_reset = False
         elif key == arcade.key.DOWN or key == arcade.key.S:
-            self.characters[0].player_list[0].change_y = 0
+            self.down_pressed = False
         elif key == arcade.key.LEFT or key == arcade.key.A:
-            self.characters[0].player_list[0].change_x = 0
+            self.left_pressed = False
         elif key == arcade.key.RIGHT or key == arcade.key.D:
-            self.characters[0].player_list[0].change_x = 0
-        elif key == arcade.key.SPACE:
+            self.right_pressed = False
+
+        self.process_keychange()
+        if key == arcade.key.SPACE:
             self.characters[0].player_list[0].change_x = 0
             self.characters[0].player_list[0].change_y = 0
             self.characters[1].player_list[0].change_y = 0
