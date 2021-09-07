@@ -6,7 +6,6 @@ from MainCharacters import MainCharacters
 
 class LinkCharacter(MainCharacters):
     SPRITE_SCALING_PLAYER = 0.05  # Konstant med skalering av størrelse
-    PLAYER_MOVEMENT_SPEED = 3  # Konstant med fart i bevegelse
 
     # noinspection PyMissingConstructor
     def __init__(self):
@@ -24,6 +23,8 @@ class LinkCharacter(MainCharacters):
         # Legger til for å tegnes
         self.player_list.append(self.player_sprite)
         self.show_inventory = False
+
+        self.PLAYER_MOVEMENT_SPEED = self.PLAYER_MOVEMENT_SPEED * 3  # Konstant med fart i bevegelse
 
         #Testing
         #Ekstra test

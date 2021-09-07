@@ -7,7 +7,7 @@ from MainCharacters import MainCharacters
 
 class Malon(MainCharacters):
     SPRITE_SCALING_PLAYER = 2
-    PLAYER_MOVEMENT_SPEED = 3
+
     def __init__(self):
 
         # Lager spriteListen som skal tegnes
@@ -24,3 +24,5 @@ class Malon(MainCharacters):
         # Legger til for å tegnes
         self.player_list.append(self.player_sprite)
         self.show_inventory = False
+
+        self.PLAYER_MOVEMENT_SPEED = self.PLAYER_MOVEMENT_SPEED * 4  # Konstant med fart i bevegelse
