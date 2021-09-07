@@ -110,7 +110,7 @@ class LonLonRanch(arcade.Window):
                                                                                    0].inventory_character.items_in_food_inventory - 1
                     self.characters[0].inventory_character.inventory_contents_sprite_list.pop()
             except IndexError:  # Feilhåndtering vis tomt for food
-                print("Out of carrots")
+                print("Out of food")
         elif key == arcade.key.Q:  # Midlertidig test for å miste liv
             self.characters[0].lose_health(3)
         elif key == arcade.key.G:  # Denne er også komplisert, denne sjekker først om inventory er mindre enn 8, og vis
@@ -120,14 +120,14 @@ class LonLonRanch(arcade.Window):
                 self.characters[0].inventory_character.append_to_inventory(SetupObjects.create_carrot())
                 print("Gulrot generert")
             else:
-                print("Food inventory fult")
+                print("Food inventory full")
         elif key == arcade.key.R:  # Denne gjør som gulrot-koden, bare med kålrabi istedenfor
             if self.characters[0].inventory_character.items_in_food_inventory <= 7:
 
                 self.characters[0].inventory_character.append_to_inventory(SetupObjects.create_rutabaga())
                 print("Rutabaga generert")
             else:
-                print("Food inventory fult")
+                print("Food inventory full")
         elif key == arcade.key.I:  # Dette er ett flag om inventory skal tegnes eller ikke
             if not self.characters[0].show_inventory:  # Nå tegnes inventory for hver character spesifikt
                 self.characters[0].show_inventory = True
