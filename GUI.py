@@ -10,6 +10,8 @@ import Walls
 # self referer til seg selv, slik at det er objektet som kaller koden på seg selv, om seg selv.
 from Enumerators import TypeOfObject
 
+LAYER_NAME_BACKGROUND = "Bakke"
+LAYER_NAME_DONT_TOUCH = "Gjerder"
 
 # Her henter jeg inn enumerators, en slags fast verdi som jeg kan referere til en plass, og bruke andre plasser.
 
@@ -32,10 +34,17 @@ class LonLonRanch(arcade.Window):
     view_bottom = 0
     view_left = 0
 
+    # Layer Names from our TileMap
+    # Our TileMap Object
+
+
     # Dette er konstruktøren til Classen LonLonRanch, som arver fra Window classen i Arcade.
     def __init__(self, width, height, title):
         # Her caller vi super-classen (den vi arver fra), sin __init__ metode, for å starte opp tegningen av vinduet.
         super().__init__(width, height, title, resizable=True)
+
+        # Our Scene Object
+        self.scene = None
         # Setter bakgrunnen
         self.characters = list()
         arcade.set_background_color(arcade.color.AMAZON)
@@ -48,6 +57,9 @@ class LonLonRanch(arcade.Window):
         self.right_pressed = False
         self.up_pressed = False
         self.down_pressed = False
+        # Our TileMap Object
+        self.tile_map = None
+
 
     # Setup kalles 1 gang i Main.Py, for å sette opp vinduet.
     def on_resize(self, width: float, height: float):
@@ -55,20 +67,49 @@ class LonLonRanch(arcade.Window):
 
     def setup(self):
 
+
+        # Initialize Scene
+        self.scene = arcade.Scene()
         Walls.setup_walls(self)  # Først lager vi veggene, som våre sprites kan krasje i
 
         self.link_character = Link.LinkCharacter()  # Her generer vi link karakteren
         self.malon_character = Malon.Malon()  # Her generer vi malon karakteren
+
         self.characters.append(self.link_character)  # Her legger vi begge characters inn i lista over spillbare characters
         self.characters.append(self.malon_character)
-        SetupObjects.setup_objects()  # Her kobler vi .png med objektene vi kan ha i inventory, slik at de blir loadet når spillet starter.
-        self.physics_engine = arcade.PhysicsEngineSimple(self.link_character.player_sprite,
-                                                         self.wall_list)  # Her setter vi fysikkenginene som driver collisions og annet
-        self.physics_engine1 = arcade.PhysicsEngineSimple(self.malon_character.player_sprite, self.wall_list)
 
+        SetupObjects.setup_objects()  # Her kobler vi .png med objektene vi kan ha i inventory, slik at de blir loadet når spillet starter.
+
+
+        # Name of map file to load
+        map_name = "TiledMaps/Bakgroundskart_med_flisesett.json"
+
+        # Layer specific options are defined based on Layer names in a dictionary
+        # Doing this will make the SpriteList for the platforms layer
+        # use spatial hashing for detection.
+
+        layer_options = {
+            LAYER_NAME_DONT_TOUCH: {
+                "use_spatial_hash": True,
+            },
+        }
+
+        # Read in the tiled map
+        self.tile_map = arcade.load_tilemap(map_name, 1, layer_options)
+
+        # Initialize Scene with our TileMap, this will automatically add all layers
+        # from the map as SpriteLists in the scene in the proper order.
+        self.scene = arcade.Scene.from_tilemap(self.tile_map)
+        self.physics_engine = arcade.PhysicsEngineSimple(self.link_character.player_sprite,
+                                                         self.scene.get_sprite_list(
+                                                             LAYER_NAME_DONT_TOUCH))  # Her setter vi fysikkenginene som driver collisions og annet
+        self.physics_engine1 = arcade.PhysicsEngineSimple(self.malon_character.player_sprite,
+                                                          self.scene.get_sprite_list(LAYER_NAME_DONT_TOUCH))
     def on_draw(self):
         """ Render the screen. """
         arcade.start_render()
+
+        self.scene.draw()
         # Your drawing code goes here
         UI.draw_UI(self, self.characters)  # Vi tegner UI
         self.characters[0].inventory_character.inventory_content_sprite_list_bar.draw()
@@ -81,13 +122,14 @@ class LonLonRanch(arcade.Window):
 
         self.wall_list.draw()  # Her tegner vi veggene
 
+
     def update(self, delta_time):
         """ All the logic to move, and the game logic goes here. """
 
         ## hit_collision_detected_list = arcade.check_for_collision_with_list(self.characters[0].player_list[0], self.wall_list)
-
         self.physics_engine.update()  # Oppdater fysikk
         self.physics_engine1.update()
+
 
         Camera.update_camera(self, self.characters[0])  # Oppdater kamera
         self.characters[0].inventory_character.update_position(self.view_left, self.view_bottom)
