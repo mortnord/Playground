@@ -10,8 +10,8 @@ class InventoryPosition:
 
 
 class Inventory:
-    InventoryContents = []
     def __init__(self):
+        self.InventoryContents = []
         pass
     def append_to_inventory(self, ItemObjektToAppend):
         self.InventoryContents.append(ItemObjektToAppend)

@@ -13,4 +13,5 @@ class Icons(Enum):  # Liste over sprites til forskjellige verdier, kan kalle f.e
 
 
 class TypeOfObject(Enum):  # Liste over type objekt
+    Placeholder = 0
     Food = 1

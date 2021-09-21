@@ -12,6 +12,9 @@ from Enumerators import TypeOfObject
 
 # Her setter vi de forskjellige layersa som tegnes på kartet, burde gjøres bedre
 # TODO : Mindre hardcoding
+from InventoryObject import InventoryObject
+from Items.GenericObject import GenericObject
+
 LAYER_NAME_BACKGROUND = "Bakke"
 LAYER_NAME_DONT_TOUCH = "Gjerder"
 
@@ -141,18 +144,21 @@ class LonLonRanch(arcade.Window):
 
         if key == arcade.key.Q:  # Midlertidig test for å miste liv
             self.characters[0].lose_health(3)
+            self.characters[0].inventory_character.InventoryContents.pop(0)
+
         elif key == arcade.key.G:
             self.characters[0].inventory_character.append_to_inventory(SetupObjects.create_carrot())
-            for x in range(len(self.characters[0].inventory_character.InventoryContents)):
-                print(self.characters[0].inventory_character.InventoryContents[x].ItemObjekt.name)
+
             print("Gulrot generert")
         elif key == arcade.key.R:  # Denne gjør som gulrot-koden, bare med kålrabi istedenfor
             self.characters[0].inventory_character.append_to_inventory(SetupObjects.create_rutabaga())
-            for x in range(len(self.characters[0].inventory_character.InventoryContents)):
-                print(self.characters[0].inventory_character.InventoryContents[x].ItemObjekt.name)
+
             print("Rutabaga generert")
 
         elif key == arcade.key.I:
+            self.characters[0].show_inventory = True
+            for x in range(len(self.characters[0].inventory_character.InventoryContents)):
+                print(self.characters[0].inventory_character.InventoryContents[x].ItemObjekt.name)
             pass
             # Dette er ett flag om inventory skal tegnes eller ikke
         elif key == arcade.key.SPACE:  # Denne bytter plass med hvem som er hovedperson og hvem som ikke er. Uelegant
