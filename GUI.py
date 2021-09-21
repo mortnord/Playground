@@ -100,10 +100,13 @@ class LonLonRanch(arcade.Window):
     def on_draw(self):
         """ Render the screen. """
         arcade.start_render() #Denne tømmer bilde, og gjør klart for nytt bilde
-
+        self.scene.draw()  ##Her tegnes alt som er lagt til i scene objektet.
         UI.draw_UI(self, self.characters)  #Her tegner vi UIet
+        for x in range(len(self.characters)):  ##Her tegner vi inventory vis det skal vises på den karakteren.
+            if self.characters[x].show_inventory:
+                self.characters[x].inventory_character.inventory_sprite_list.draw()
 
-        self.scene.draw() ##Her tegnes alt som er lagt til i scene objektet.
+
 
     def update(self, delta_time):
         """ All the logic to move, and the game logic goes here. """
@@ -111,7 +114,9 @@ class LonLonRanch(arcade.Window):
         self.physics_engine.update() #Denne oppdater fysikken, og sjekker for kollisjoner osv
         self.physics_engine1.update()
 
+
         Camera.update_camera(self, self.characters[0]) #Denne flytter kamera etter hovedpersonen
+        self.characters[0].inventory_character.inventory_position(self.view_left, self.view_bottom) #Denne flytter inventory etter hovedpersonen
 
 
     def process_keychange(self): ##Her håndterer vi hva retning vi skal gå med å sjekke hva knapper som er trykket inn
@@ -151,7 +156,10 @@ class LonLonRanch(arcade.Window):
             self.characters[0].inventory_character.append_to_inventory(SetupObjects.create_rutabaga())
             print("Rutabaga generert")
         elif key == arcade.key.I:
-            self.characters[0].show_inventory = True
+            if not self.characters[0].show_inventory:  # Nå tegnes inventory for hver character spesifikt
+                self.characters[0].show_inventory = True
+            elif self.characters[0].show_inventory:
+                self.characters[0].show_inventory = False
             for x in range(len(self.characters[0].inventory_character.InventoryContents)):
                 print(self.characters[0].inventory_character.InventoryContents[x].ItemObjekt.name)
             pass
