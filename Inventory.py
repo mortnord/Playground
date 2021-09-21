@@ -16,4 +16,5 @@ class Inventory:
     def append_to_inventory(self, ItemObjektToAppend):
         self.InventoryContents.append(ItemObjektToAppend)
         pass
-
+    def inventory_position(self):
+        pass
