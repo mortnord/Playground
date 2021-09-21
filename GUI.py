@@ -99,11 +99,6 @@ class LonLonRanch(arcade.Window):
         arcade.start_render() #Denne tømmer bilde, og gjør klart for nytt bilde
 
         UI.draw_UI(self, self.characters)  #Her tegner vi UIet
-        self.characters[0].inventory_character.inventory_content_sprite_list_bar.draw() #Denne tegner nedre item baren
-        for x in range(len(self.characters)): ##Her tegner vi inventory vis det skal vises på den karakteren.
-            if self.characters[x].show_inventory:
-                self.characters[x].inventory_character.inventory_list.draw()
-                self.characters[x].inventory_character.inventory_contents_sprite_list.draw()
 
         self.scene.draw() ##Her tegnes alt som er lagt til i scene objektet.
 
@@ -114,7 +109,7 @@ class LonLonRanch(arcade.Window):
         self.physics_engine1.update()
 
         Camera.update_camera(self, self.characters[0]) #Denne flytter kamera etter hovedpersonen
-        self.characters[0].inventory_character.update_position(self.view_left, self.view_bottom) #Denne flytter inventory etter hovedpersonen
+
 
     def process_keychange(self): ##Her håndterer vi hva retning vi skal gå med å sjekke hva knapper som er trykket inn
         if self.up_pressed and not self.down_pressed: #Opp, og ikke ned
@@ -144,49 +139,29 @@ class LonLonRanch(arcade.Window):
 
         self.process_keychange()
 
-        if key == arcade.key.E:
-            ## TODO: split inventory i flere biter, og kun sjekk food inventory
-            try:
-                if self.characters[0].inventory_character.get_inventory_contents()[
-                    0].get_type_object() == TypeOfObject.Food:
-                    self.characters[0].gain_health(
-                        self.characters[0].inventory_character.get_inventory_contents().pop().get_healing_value())
-                    print("Gulrot spist")
-                    self.characters[0].inventory_character.items_in_food_inventory = self.characters[
-                                                                                         0].inventory_character.items_in_food_inventory - 1
-                    self.characters[0].inventory_character.inventory_contents_sprite_list.pop()
-            except IndexError:  # Feilhåndtering vis tomt for food
-                print("Out of food")
-        elif key == arcade.key.Q:  # Midlertidig test for å miste liv
+        if key == arcade.key.Q:  # Midlertidig test for å miste liv
             self.characters[0].lose_health(3)
-        elif key == arcade.key.G:  # Denne er også komplisert, denne sjekker først om inventory er mindre enn 8, og vis
-            # det er, så legg til en nylig generert RawFoodObjekt med verdiene til en carrot
-
-            if self.characters[0].inventory_character.items_in_food_inventory <= 7:
-                self.characters[0].inventory_character.append_to_inventory(SetupObjects.create_carrot())
-                print("Gulrot generert")
-            else:
-                print("Food inventory full")
+        elif key == arcade.key.G:
+            self.characters[0].inventory_character.append_to_inventory(SetupObjects.create_carrot())
+            for x in range(len(self.characters[0].inventory_character.InventoryContents)):
+                print(self.characters[0].inventory_character.InventoryContents[x].ItemObjekt.name)
+            print("Gulrot generert")
         elif key == arcade.key.R:  # Denne gjør som gulrot-koden, bare med kålrabi istedenfor
-            if self.characters[0].inventory_character.items_in_food_inventory <= 7:
+            self.characters[0].inventory_character.append_to_inventory(SetupObjects.create_rutabaga())
+            for x in range(len(self.characters[0].inventory_character.InventoryContents)):
+                print(self.characters[0].inventory_character.InventoryContents[x].ItemObjekt.name)
+            print("Rutabaga generert")
 
-                self.characters[0].inventory_character.append_to_inventory(SetupObjects.create_rutabaga())
-                print("Rutabaga generert")
-            else:
-                print("Food inventory full")
-        elif key == arcade.key.I:  # Dette er ett flag om inventory skal tegnes eller ikke
-            if not self.characters[0].show_inventory:  # Nå tegnes inventory for hver character spesifikt
-                self.characters[0].show_inventory = True
-            elif self.characters[0].show_inventory:
-                self.characters[0].show_inventory = False
+        elif key == arcade.key.I:
+            pass
+            # Dette er ett flag om inventory skal tegnes eller ikke
         elif key == arcade.key.SPACE:  # Denne bytter plass med hvem som er hovedperson og hvem som ikke er. Uelegant
             swapPositions(self.characters, 0, 1)
-            self.characters[0].inventory_character.update_position(self.view_left,self.view_bottom)  # Denne flytter inventory etter hovedpersonen
+
 
     def on_key_release(self, key, modifiers): #Denne avflagger at knapper er trykket, slik at vi ikke får noen låste bevegelser osv
         if key == arcade.key.UP or key == arcade.key.W:
             self.up_pressed = False
-            self.jump_needs_reset = False
         elif key == arcade.key.DOWN or key == arcade.key.S:
             self.down_pressed = False
         elif key == arcade.key.LEFT or key == arcade.key.A:

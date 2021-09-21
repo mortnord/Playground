@@ -8,6 +8,7 @@ class GenericObject:
         self.name = name
         self.type_object = type_object
 
+
     def get_weight(self):
         return self.weight
 
