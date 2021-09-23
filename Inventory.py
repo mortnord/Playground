@@ -1,5 +1,8 @@
 import arcade
 
+import SetupObjects
+from Enumerators import Veggies
+
 INVENTORY_SCALING = 2  # Konstant for størrelse
 
 
@@ -20,16 +23,30 @@ class Inventory:
 
     def append_to_inventory(self, ItemObjektToAppend):
         self.InventoryContents.append(ItemObjektToAppend)
+        self.inventory_sprite_list.append(ItemObjektToAppend.ItemObjekt.icon)
+        self.update_sprite_position()
+        self.reorder_contents()
         pass
+
+    def reorder_contents(self):
+        for x in range(len(self.inventory_sprite_list)):
+            try:
+                self.InventoryContents[x].ItemObjekt.icon.center_y = self.inventory_contents_sprite_list_position[x].PosX
+                self.InventoryContents[x].ItemObjekt.icon.center_x = self.inventory_contents_sprite_list_position[x].PosY
+            except IndexError:
+                pass
 
     def inventory_position(self, view_left, view_bottom):
         self.inventory_sprite.center_x = view_left + 400
         self.inventory_sprite.center_y = view_bottom + 250
+        self.update_sprite_position()
+        self.reorder_contents()
         pass
 
     def setup_sprite_position(self):  # TODO Endre på.
         for x in range(8):
             try:
+                print(x)
                 if x <= 3:
                     Pos = SpritePosition(self.inventory_sprite.top - 15, self.inventory_sprite.left + (x * 31) + 18)
                     self.inventory_contents_sprite_list_position.append(Pos)
@@ -38,3 +55,25 @@ class Inventory:
                     self.inventory_contents_sprite_list_position.append(Pos)
             except IndexError:
                 print("ERROR")
+
+    def update_sprite_position(self):
+        for x in range(8):
+            try:
+                if x <= 3:
+                    self.inventory_contents_sprite_list_position[x].PosX = self.inventory_sprite.top - 15
+                    self.inventory_contents_sprite_list_position[x].PosY = self.inventory_sprite.left + (x * 31) + 18
+                elif x >= 4:
+                    self.inventory_contents_sprite_list_position[x].PosX = self.inventory_sprite.top - 45
+                    self.inventory_contents_sprite_list_position[x].PosY = self.inventory_sprite.left + (
+                            x * 31) + 18 - 124
+            except IndexError:
+                print("ERROR")
+
+    def create_object(self, Object_to_create):
+        if Object_to_create == Veggies.Carrot:
+            self.append_to_inventory(SetupObjects.create_carrot())
+            print("Gulrot generert")
+        elif Object_to_create == Veggies.Rutabaga:
+            self.append_to_inventory(SetupObjects.create_rutabaga())
+            print("Kålrabi generert")
+        pass

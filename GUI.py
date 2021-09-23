@@ -6,14 +6,11 @@ import Malon
 import SetupObjects
 import UI
 
-from Enumerators import TypeOfObject
-
 # Her importerer vi nødvendige filer, relativt sipelt
 
 # Her setter vi de forskjellige layersa som tegnes på kartet, burde gjøres bedre
 # TODO : Mindre hardcoding
-from InventoryObject import InventoryObject
-from Items.GenericObject import GenericObject
+from Enumerators import Veggies
 
 LAYER_NAME_BACKGROUND = "Bakke"
 LAYER_NAME_DONT_TOUCH = "Gjerder"
@@ -97,6 +94,7 @@ class LonLonRanch(arcade.Window):
         self.physics_engine1 = arcade.PhysicsEngineSimple(self.malon_character.player_sprite,
                                                           self.scene.get_sprite_list(LAYER_NAME_DONT_TOUCH))
 
+
     def on_draw(self):
         """ Render the screen. """
         arcade.start_render() #Denne tømmer bilde, og gjør klart for nytt bilde
@@ -113,7 +111,6 @@ class LonLonRanch(arcade.Window):
 
         self.physics_engine.update() #Denne oppdater fysikken, og sjekker for kollisjoner osv
         self.physics_engine1.update()
-
 
         Camera.update_camera(self, self.characters[0]) #Denne flytter kamera etter hovedpersonen
         self.characters[0].inventory_character.inventory_position(self.view_left, self.view_bottom) #Denne flytter inventory etter hovedpersonen
@@ -150,11 +147,9 @@ class LonLonRanch(arcade.Window):
         if key == arcade.key.Q:  # Midlertidig test for å miste liv
             self.characters[0].lose_health(3)
         elif key == arcade.key.G:
-            self.characters[0].inventory_character.append_to_inventory(SetupObjects.create_carrot())
-            print("Gulrot generert")
+            self.characters[0].inventory_character.create_object(Veggies.Carrot)
         elif key == arcade.key.R:  # Denne gjør som gulrot-koden, bare med kålrabi istedenfor
-            self.characters[0].inventory_character.append_to_inventory(SetupObjects.create_rutabaga())
-            print("Rutabaga generert")
+            self.characters[0].inventory_character.create_object(Veggies.Rutabaga)
         elif key == arcade.key.I:
             if not self.characters[0].show_inventory:  # Nå tegnes inventory for hver character spesifikt
                 self.characters[0].show_inventory = True
