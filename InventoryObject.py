@@ -3,7 +3,6 @@ class InventoryObject:
     PosX = 0
     PosY = 0
 
-    def __init__(self, ItemObjekt, PosX, PosY):
+    def __init__(self, ItemObjekt, SpritePosition):
         self.ItemObjekt = ItemObjekt
-        self.PosX = PosX
-        self.PosY = PosY
+        self.SpritePosition = SpritePosition
