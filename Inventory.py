@@ -19,11 +19,18 @@ class Inventory:
         self.inventory_sprite_list = arcade.SpriteList()
         self.inventory_sprite_list.append(self.inventory_sprite)
         self.InventoryContents = []
+        self.InventoryBusy = []
         self.setup_sprite_position()
 
     def append_to_inventory(self, ItemObjektToAppend):
-        self.InventoryContents.append(ItemObjektToAppend)
-        self.inventory_sprite_list.append(ItemObjektToAppend.ItemObjekt.icon)
+        for x in range(len(self.InventoryBusy)):
+            if self.InventoryBusy[x] == False:
+                print(str(x) + " inventory slot er ledig")
+                self.InventoryContents.insert(x, ItemObjektToAppend)
+                self.inventory_sprite_list.append(ItemObjektToAppend.ItemObjekt.icon)
+                self.InventoryBusy[x] = True
+                break
+
         self.update_sprite_position()
         self.reorder_contents()
         pass
@@ -45,6 +52,7 @@ class Inventory:
 
     def setup_sprite_position(self):  # TODO Endre på.
         for x in range(8):
+            self.InventoryBusy.append(False)
             try:
                 print(x)
                 if x <= 3:
