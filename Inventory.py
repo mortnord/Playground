@@ -97,3 +97,8 @@ class Inventory:
             self.append_to_inventory(SetupObjects.create_rutabaga())
             print("Kålrabi generert")
         pass
+
+    def check_for_interaction(self, x, y, button):
+        hits = arcade.get_sprites_at_point((x, y),self.inventory_sprite_list)
+        print(hits)
+        pass

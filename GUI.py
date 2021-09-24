@@ -181,3 +181,5 @@ class LonLonRanch(arcade.Window):
             self.characters[0].player_sprite.change_y = 0
             self.characters[1].player_sprite.change_y = 0
             self.characters[1].player_sprite.change_x = 0
+    def on_mouse_press(self, x: float, y: float, button: int, modifiers: int):
+        self.characters[0].inventory_character.check_for_interaction(x, y, button)
