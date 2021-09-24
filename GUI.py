@@ -112,8 +112,10 @@ class LonLonRanch(arcade.Window):
         self.physics_engine.update() #Denne oppdater fysikken, og sjekker for kollisjoner osv
         self.physics_engine1.update()
 
+
         Camera.update_camera(self, self.characters[0]) #Denne flytter kamera etter hovedpersonen
         self.characters[0].inventory_character.inventory_position(self.view_left, self.view_bottom) #Denne flytter inventory etter hovedpersonen
+
 
 
     def process_keychange(self): ##Her håndterer vi hva retning vi skal gå med å sjekke hva knapper som er trykket inn

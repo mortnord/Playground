@@ -16,8 +16,9 @@ class Inventory:
     def __init__(self):
         self.inventory_contents_sprite_list_position = []
         self.inventory_sprite = arcade.Sprite("Sprites/Inventory V1.png", INVENTORY_SCALING)
-        self.inventory_sprite_list = arcade.SpriteList()
-        self.inventory_sprite_list.append(self.inventory_sprite)
+        self.inventory_sprite_list = arcade.SpriteList(capacity=50)
+
+        self.inventory_sprite_list.insert(0, self.inventory_sprite)
         self.InventoryContents = []
         self.InventoryBusy = []
         self.setup_sprite_position()
@@ -26,20 +27,26 @@ class Inventory:
         for x in range(len(self.InventoryBusy)):
             if self.InventoryBusy[x] == False:
                 print(str(x) + " inventory slot er ledig")
+                ItemObjektToAppend.setItemNumber(x)
+
                 self.InventoryContents.insert(x, ItemObjektToAppend)
+                print(x)
                 self.inventory_sprite_list.append(ItemObjektToAppend.ItemObjekt.icon)
+
                 self.InventoryBusy[x] = True
                 break
 
-        self.update_sprite_position()
         self.reorder_contents()
+        self.update_sprite_position()
         pass
 
     def reorder_contents(self):
         for x in range(len(self.inventory_sprite_list)):
             try:
-                self.InventoryContents[x].ItemObjekt.icon.center_y = self.inventory_contents_sprite_list_position[x].PosX
-                self.InventoryContents[x].ItemObjekt.icon.center_x = self.inventory_contents_sprite_list_position[x].PosY
+                self.InventoryContents[x].ItemObjekt.icon.center_y = self.inventory_contents_sprite_list_position[
+                    self.InventoryContents[x].getItemNumber()].PosX
+                self.InventoryContents[x].ItemObjekt.icon.center_x = self.inventory_contents_sprite_list_position[
+                    self.InventoryContents[x].getItemNumber()].PosY
             except IndexError:
                 pass
 
@@ -47,6 +54,7 @@ class Inventory:
         self.inventory_sprite.center_x = view_left + 400
         self.inventory_sprite.center_y = view_bottom + 250
         self.update_sprite_position()
+
         self.reorder_contents()
         pass
 
@@ -63,6 +71,10 @@ class Inventory:
                     self.inventory_contents_sprite_list_position.append(Pos)
             except IndexError:
                 print("ERROR")
+        for x in range(len(self.inventory_sprite_list)):
+
+            print(x)
+            print(self.inventory_sprite_list[x].position)
 
     def update_sprite_position(self):
         for x in range(8):
