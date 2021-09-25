@@ -57,11 +57,14 @@ class LonLonRanch(arcade.Window):
         self.link_character = Link.LinkCharacter() ##Opprettelse av Link og Malon objektene
         self.malon_character = Malon.Malon()
 
+
         self.characters.append(self.link_character) #Her legger vi dem til i lista over karakter
         self.characters.append(self.malon_character)
 
         SetupObjects.setup_objects() # Her lager vi alle ting-objektene og laster in bilder.
 
+        for x in range(len(self.characters)):  ##Her tegner vi inventory vis det skal vises på den karakteren.
+            self.characters[x].inventory_character.setup()
         ##Dette er hva kart som skal lastes, #TODO : Mindre hardcoding
         map_name = "TiledMaps/Bakgroundskart_med_flisesett.json"
 
@@ -101,8 +104,8 @@ class LonLonRanch(arcade.Window):
         self.scene.draw()  ##Her tegnes alt som er lagt til i scene objektet.
         UI.draw_UI(self, self.characters)  #Her tegner vi UIet
         for x in range(len(self.characters)):  ##Her tegner vi inventory vis det skal vises på den karakteren.
-            if self.characters[x].show_inventory:
-                self.characters[x].inventory_character.inventory_sprite_list.draw()
+
+            self.characters[x].inventory_character.item_list.draw()
 
 
 
@@ -114,7 +117,7 @@ class LonLonRanch(arcade.Window):
 
 
         Camera.update_camera(self, self.characters[0]) #Denne flytter kamera etter hovedpersonen
-        self.characters[0].inventory_character.inventory_position(self.view_left, self.view_bottom) #Denne flytter inventory etter hovedpersonen
+        #self.characters[0].inventory_character.inventory_position(self.view_left, self.view_bottom) #Denne flytter inventory etter hovedpersonen
 
 
 
@@ -182,4 +185,13 @@ class LonLonRanch(arcade.Window):
             self.characters[1].player_sprite.change_y = 0
             self.characters[1].player_sprite.change_x = 0
     def on_mouse_press(self, x: float, y: float, button: int, modifiers: int):
-        self.characters[0].inventory_character.check_for_interaction(x, y, button)
+
+        self.characters[0].inventory_character.item_interaction_mouse(x, y, button)
+
+
+    def on_mouse_motion(self, x: float, y: float, dx: float, dy: float):
+        """ User moves mouse """
+        self.characters[0].inventory_character.item_interaction_mouse_moving(dx, dy)
+
+    def on_mouse_release(self, x: float, y: float, button: int,modifiers: int):
+        self.characters[0].inventory_character.item_interaction_mouse_release(x, y)

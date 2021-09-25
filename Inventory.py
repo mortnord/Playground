@@ -2,6 +2,7 @@ import arcade
 
 import SetupObjects
 from Enumerators import Veggies
+from InventoryObject import InventoryObject
 
 INVENTORY_SCALING = 2  # Konstant for størrelse
 
@@ -14,91 +15,43 @@ class SpritePosition:
 
 class Inventory:
     def __init__(self):
-        self.inventory_contents_sprite_list_position = []
-        self.inventory_sprite = arcade.Sprite("Sprites/Inventory V1.png", INVENTORY_SCALING)
-        self.inventory_sprite_list = arcade.SpriteList(capacity=50)
-
-        self.inventory_sprite_list.insert(0, self.inventory_sprite)
-        self.InventoryContents = []
-        self.InventoryBusy = []
-        self.setup_sprite_position()
-
-    def append_to_inventory(self, ItemObjektToAppend):
-        for x in range(len(self.InventoryBusy)):
-            if self.InventoryBusy[x] == False:
-                print(str(x) + " inventory slot er ledig")
-                ItemObjektToAppend.setItemNumber(x)
-
-                self.InventoryContents.insert(x, ItemObjektToAppend)
-                print(x)
-                self.inventory_sprite_list.append(ItemObjektToAppend.ItemObjekt.icon)
-
-                self.InventoryBusy[x] = True
-                break
-
-        self.reorder_contents()
-        self.update_sprite_position()
+        self.item_list = None
+        self.held_item = None
+        self.held_item_original_position = None
         pass
 
-    def reorder_contents(self):
-        for x in range(len(self.inventory_sprite_list)):
-            try:
-                self.InventoryContents[x].ItemObjekt.icon.center_y = self.inventory_contents_sprite_list_position[
-                    self.InventoryContents[x].getItemNumber()].PosX
-                self.InventoryContents[x].ItemObjekt.icon.center_x = self.inventory_contents_sprite_list_position[
-                    self.InventoryContents[x].getItemNumber()].PosY
-            except IndexError:
-                pass
+    def setup(self):
+        self.held_item = []
+        self.held_item_original_position = []
+        self.item_list = arcade.SpriteList()
+        testCarrot = SetupObjects.create_carrot()
+        testCarrot.position = (200,200)
+        self.item_list.append(testCarrot)
 
-    def inventory_position(self, view_left, view_bottom):
-        self.inventory_sprite.center_x = view_left + 400
-        self.inventory_sprite.center_y = view_bottom + 250
-        self.update_sprite_position()
+    def pick_up_item(self, item: arcade.Sprite):
+        self.item_list.remove(item)
+        self.item_list.append(item)
 
-        self.reorder_contents()
-        pass
+    def item_interaction_mouse(self, x, y, button):
+        print(x)
+        print(y)
+        items = arcade.get_sprites_at_point((x, y), self.item_list)
+        if len(items) > 0:
+            primary_item = items[-1]
 
-    def setup_sprite_position(self):  # TODO Endre på.
-        for x in range(8):
-            self.InventoryBusy.append(False)
-            try:
-                print(x)
-                if x <= 3:
-                    Pos = SpritePosition(self.inventory_sprite.top - 15, self.inventory_sprite.left + (x * 31) + 18)
-                    self.inventory_contents_sprite_list_position.append(Pos)
-                elif x >= 4:
-                    Pos = SpritePosition(self.inventory_sprite.top - 45, (x * 31) + 18 - 124)
-                    self.inventory_contents_sprite_list_position.append(Pos)
-            except IndexError:
-                print("ERROR")
-        for x in range(len(self.inventory_sprite_list)):
+            # All other cases, grab the face-up card we are clicking on
+            self.held_item = [primary_item]
+            # Save the position
+            self.held_item_original_position = [self.held_item[0].position]
+            # Put on top in drawing order
+            self.pick_up_item(self.held_item[0])
 
-            print(x)
-            print(self.inventory_sprite_list[x].position)
+    def item_interaction_mouse_moving(self, dx, dy):
+        for item in self.held_item:
+            item.center_x += dx
+            item.center_y += dy
 
-    def update_sprite_position(self):
-        for x in range(8):
-            try:
-                if x <= 3:
-                    self.inventory_contents_sprite_list_position[x].PosX = self.inventory_sprite.top - 15
-                    self.inventory_contents_sprite_list_position[x].PosY = self.inventory_sprite.left + (x * 31) + 18
-                elif x >= 4:
-                    self.inventory_contents_sprite_list_position[x].PosX = self.inventory_sprite.top - 45
-                    self.inventory_contents_sprite_list_position[x].PosY = self.inventory_sprite.left + (
-                            x * 31) + 18 - 124
-            except IndexError:
-                print("ERROR")
-
-    def create_object(self, Object_to_create):
-        if Object_to_create == Veggies.Carrot:
-            self.append_to_inventory(SetupObjects.create_carrot())
-            print("Gulrot generert")
-        elif Object_to_create == Veggies.Rutabaga:
-            self.append_to_inventory(SetupObjects.create_rutabaga())
-            print("Kålrabi generert")
-        pass
-
-    def check_for_interaction(self, x, y, button):
-        hits = arcade.get_sprites_at_point((x, y),self.inventory_sprite_list)
-        print(hits)
-        pass
+    def item_interaction_mouse_release(self, x, y):
+        if len(self.held_item) == 0:
+            return
+        self.held_item=[]

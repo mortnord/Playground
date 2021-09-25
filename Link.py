@@ -16,8 +16,8 @@ class LinkCharacter(MainCharacters):
         # Kobler sprite .pngen til koden
         self.player_sprite = arcade.Sprite("Sprites/Link.png", self.SPRITE_SCALING_PLAYER)
         # startposisjon
-        self.player_sprite.center_x = 50
-        self.player_sprite.center_y = 50
+        self.player_sprite.center_x = 250
+        self.player_sprite.center_y = 250
         #flag for å sjekke om inventory skal vises
         self.show_inventory = False
 

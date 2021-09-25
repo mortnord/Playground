@@ -17,8 +17,8 @@ class Malon(MainCharacters):
         # Kobler sprite .pngen til koden
         self.player_sprite = arcade.Sprite("Sprites/Malon.png", self.SPRITE_SCALING_PLAYER)
         # startposisjon
-        self.player_sprite.center_x = 100
-        self.player_sprite.center_y = 50
+        self.player_sprite.center_x = 250
+        self.player_sprite.center_y = 250
         #Flag for å sjekke om inventory skal tegnes eller ikke
         self.show_inventory = False
 
