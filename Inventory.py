@@ -1,8 +1,6 @@
 import arcade
 
 import SetupObjects
-from Enumerators import Veggies
-from InventoryObject import InventoryObject
 
 INVENTORY_SCALING = 2  # Konstant for størrelse
 
@@ -26,7 +24,10 @@ class Inventory:
         self.item_list = arcade.SpriteList()
         testCarrot = SetupObjects.create_carrot()
         testCarrot.position = (200,200)
+        testCarrot2 = SetupObjects.create_carrot()
+        testCarrot2.position = (200,200)
         self.item_list.append(testCarrot)
+        self.item_list.append(testCarrot2)
 
     def pick_up_item(self, item: arcade.Sprite):
         self.item_list.remove(item)
