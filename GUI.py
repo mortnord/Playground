@@ -11,6 +11,7 @@ import UI
 # Her setter vi de forskjellige layersa som tegnes på kartet, burde gjøres bedre
 # TODO : Mindre hardcoding
 from Enumerators import Veggies
+from Inventory import Inventory
 
 LAYER_NAME_BACKGROUND = "Bakke"
 LAYER_NAME_DONT_TOUCH = "Gjerder"
@@ -56,7 +57,7 @@ class LonLonRanch(arcade.Window):
 
         self.link_character = Link.LinkCharacter() ##Opprettelse av Link og Malon objektene
         self.malon_character = Malon.Malon()
-
+        self.ground_inventory = Inventory()
 
         self.characters.append(self.link_character) #Her legger vi dem til i lista over karakter
         self.characters.append(self.malon_character)
@@ -103,10 +104,10 @@ class LonLonRanch(arcade.Window):
         arcade.start_render() #Denne tømmer bilde, og gjør klart for nytt bilde
         self.scene.draw()  ##Her tegnes alt som er lagt til i scene objektet.
         UI.draw_UI(self, self.characters)  #Her tegner vi UIet
-        for x in range(len(self.characters)):  ##Her tegner vi inventory vis det skal vises på den karakteren.
-
-            self.characters[x].inventory_character.item_list.draw()
-
+        if self.ground_inventory.initialized:
+            self.ground_inventory.item_list.draw()
+        if self.characters[0].inventory_character.initialized:
+            self.characters[0].inventory_character.item_list.draw()
 
 
     def update(self, delta_time):
@@ -117,7 +118,6 @@ class LonLonRanch(arcade.Window):
 
 
         Camera.update_camera(self, self.characters[0]) #Denne flytter kamera etter hovedpersonen
-        #self.characters[0].inventory_character.inventory_position(self.view_left, self.view_bottom) #Denne flytter inventory etter hovedpersonen
 
 
 
@@ -152,16 +152,11 @@ class LonLonRanch(arcade.Window):
         if key == arcade.key.Q:  # Midlertidig test for å miste liv
             self.characters[0].lose_health(3)
         elif key == arcade.key.G:
-            self.characters[0].inventory_character.create_object(Veggies.Carrot)
+            self.characters[0].inventory_character.create_carrot()
+            pass
         elif key == arcade.key.R:  # Denne gjør som gulrot-koden, bare med kålrabi istedenfor
-            self.characters[0].inventory_character.create_object(Veggies.Rutabaga)
+            pass
         elif key == arcade.key.I:
-            if not self.characters[0].show_inventory:  # Nå tegnes inventory for hver character spesifikt
-                self.characters[0].show_inventory = True
-            elif self.characters[0].show_inventory:
-                self.characters[0].show_inventory = False
-            for x in range(len(self.characters[0].inventory_character.InventoryContents)):
-                print(self.characters[0].inventory_character.InventoryContents[x].ItemObjekt.name)
             pass
             # Dette er ett flag om inventory skal tegnes eller ikke
         elif key == arcade.key.SPACE:  # Denne bytter plass med hvem som er hovedperson og hvem som ikke er. Uelegant

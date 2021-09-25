@@ -3,6 +3,8 @@ import arcade
 import SetupObjects
 
 INVENTORY_SCALING = 2  # Konstant for størrelse
+ITEM_HEIGHT = 64
+ITEM_WIDTH = 64
 
 
 class SpritePosition:
@@ -13,21 +15,17 @@ class SpritePosition:
 
 class Inventory:
     def __init__(self):
+        self.initialized = False
         self.item_list = None
         self.held_item = None
         self.held_item_original_position = None
-        pass
+        self.item_inventory_slots = None
 
     def setup(self):
         self.held_item = []
         self.held_item_original_position = []
         self.item_list = arcade.SpriteList()
-        testCarrot = SetupObjects.create_carrot()
-        testCarrot.position = (200,200)
-        testCarrot2 = SetupObjects.create_carrot()
-        testCarrot2.position = (200,200)
-        self.item_list.append(testCarrot)
-        self.item_list.append(testCarrot2)
+        self.item_inventory_slots: arcade.SpriteList = arcade.SpriteList()
 
     def pick_up_item(self, item: arcade.Sprite):
         self.item_list.remove(item)
@@ -55,4 +53,11 @@ class Inventory:
     def item_interaction_mouse_release(self, x, y):
         if len(self.held_item) == 0:
             return
-        self.held_item=[]
+        self.held_item = []
+
+    def create_carrot(self):
+        self.initialized = True
+        testCarrot = SetupObjects.create_carrot()
+        testCarrot.position = (200,200)
+        self.item_list.append(testCarrot)
+        pass
