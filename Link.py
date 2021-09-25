@@ -12,7 +12,7 @@ class LinkCharacter(MainCharacters):
         # starter Liv
         self.health = 12
         # Lager Inventory til Link
-        self.inventory_character = Inventory()
+        self.inventory_character = Inventory(arcade.csscolor.YELLOW)
         # Kobler sprite .pngen til koden
         self.player_sprite = arcade.Sprite("Sprites/Link.png", self.SPRITE_SCALING_PLAYER)
         # startposisjon

@@ -57,7 +57,7 @@ class LonLonRanch(arcade.Window):
 
         self.link_character = Link.LinkCharacter() ##Opprettelse av Link og Malon objektene
         self.malon_character = Malon.Malon()
-        self.ground_inventory = Inventory()
+        self.ground_inventory = Inventory(arcade.csscolor.WHITE)
 
         self.characters.append(self.link_character) #Her legger vi dem til i lista over karakter
         self.characters.append(self.malon_character)
@@ -107,7 +107,10 @@ class LonLonRanch(arcade.Window):
         if self.ground_inventory.initialized:
             self.ground_inventory.item_list.draw()
         if self.characters[0].inventory_character.initialized:
+
+            self.characters[0].inventory_character.item_inventory_slots.draw()
             self.characters[0].inventory_character.item_list.draw()
+
 
 
     def update(self, delta_time):
