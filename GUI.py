@@ -158,6 +158,7 @@ class LonLonRanch(arcade.Window):
             self.characters[0].inventory_character.create_carrot()
             pass
         elif key == arcade.key.R:  # Denne gjør som gulrot-koden, bare med kålrabi istedenfor
+            self.characters[0].inventory_character.create_rutabaga()
             pass
         elif key == arcade.key.I:
             pass

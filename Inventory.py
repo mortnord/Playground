@@ -1,6 +1,7 @@
 import arcade
 
 import SetupObjects
+import InventoryObject
 
 INVENTORY_SCALING = 2  # Konstant for størrelse
 ITEM_HEIGHT = 64
@@ -49,12 +50,9 @@ class Inventory:
         self.item_list.append(item)
 
     def item_interaction_mouse(self, x, y, button):
-        print(x)
-        print(y)
         items = arcade.get_sprites_at_point((x, y), self.item_list)
         if len(items) > 0:
             primary_item = items[-1]
-
             # All other cases, grab the face-up card we are clicking on
             self.held_item = [primary_item]
             # Save the position
@@ -86,5 +84,11 @@ class Inventory:
     def create_carrot(self):
         testCarrot = SetupObjects.create_carrot()
         testCarrot.position = (200, 200)
+        print(testCarrot.identification_number)
+        print(testCarrot.item_objekt.spesific_object)
         self.item_list.append(testCarrot)
         pass
+    def create_rutabaga(self):
+        testRutabaga = SetupObjects.create_rutabaga()
+        testRutabaga.position = (200,200)
+        self.item_list.append(testRutabaga)
