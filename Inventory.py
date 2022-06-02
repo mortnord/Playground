@@ -88,7 +88,8 @@ class Inventory:
         print(testCarrot.item_objekt.spesific_object)
         self.item_list.append(testCarrot)
         pass
+
     def create_rutabaga(self):
         testRutabaga = SetupObjects.create_rutabaga()
-        testRutabaga.position = (200,200)
+        testRutabaga.position = (200, 200)
         self.item_list.append(testRutabaga)
