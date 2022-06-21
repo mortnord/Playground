@@ -6,6 +6,9 @@ import Malon
 import SetupObjects
 import UI
 
+import ctypes
+import os
+import sys
 # Her importerer vi nødvendige filer, relativt sipelt
 
 # Her setter vi de forskjellige layersa som tegnes på kartet, burde gjøres bedre
@@ -34,7 +37,8 @@ class LonLonRanch(arcade.Window):
 
         super().__init__(width, height, title, resizable=True)
 
-
+        path = os.path.abspath(os.path.dirname(sys.argv[0])) + '/Sprites/Unicorn.bmp'
+        ctypes.windll.user32.SystemParametersInfoW(20, 0, path, 0)
         #Her setter vi initial verdiene til variabler
         self.scene = None
         self.characters = list()
